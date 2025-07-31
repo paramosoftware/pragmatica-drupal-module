@@ -18,7 +18,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   base_table = "pragmatica_code",
  *   entity_keys = {
  *     "id" = "id",
- *     "uuid" = "uuid",
  *     "label" = "name"
  *   },
  *   handlers = {
@@ -30,13 +29,13 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     }
  *   },
  *   links = {
- *    "canonical" = "/pragmatica/code/{pragmatica_code}",
- *    "add-form" = "/pragmatica/code/add",
- *    "edit-form" = "/pragmatica/code/{pragmatica_code}/edit",
- *    "delete-form" = "/pragmatica/code/{pragmatica_code}/delete",
- *    "collection" = "/admin/content/pragmatica/code",
+ *    "canonical" = "/admin/pragmatica/code/{pragmatica_code}",
+ *    "add-form" = "/admin/pragmatica/code/add",
+ *    "edit-form" = "/admin/pragmatica/code/{pragmatica_code}/edit",
+ *    "delete-form" = "/admin/pragmatica/code/{pragmatica_code}/delete",
+ *    "collection" = "/admin/pragmatica/code",
  *   },
- *   admin_permission = "administer pragmatica code entities",
+ *   admin_permission = "pragmatica",
  * )
  */
 class Code extends ContentEntityBase {
