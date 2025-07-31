@@ -24,8 +24,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   handlers = {
  *     "list_builder" = "Drupal\pragmatica\ListBuilder\CodeListBuilder",
  *     "form" = {
- *       "add" = "Drupal\Core\Entity\ContentEntityForm",
- *       "edit" = "Drupal\Core\Entity\ContentEntityForm",
+ *       "add" = "Drupal\pragmatica\Form\CodeForm",
+ *       "edit" = "Drupal\pragmatica\Form\CodeForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
  *     }
  *   },
@@ -117,6 +117,20 @@ class Code extends ContentEntityBase {
         'label' => 'above',
         'type' => 'text_default',
         'weight' => -1,
+      ]);
+
+    $fields['parent'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Código pai'))
+      ->setDescription(t('Seleciona um código pai para este código.'))
+      ->setSetting('target_type', 'pragmatica_code')
+      ->setDisplayOptions('form', [
+        'type' => 'options_select', // OU: entity_reference_autocomplete
+        'weight' => -6,
+      ])
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'entity_reference_label',
+        'weight' => -6,
       ]);
 
     $fields['created'] = BaseFieldDefinition::create('created')

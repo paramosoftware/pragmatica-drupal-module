@@ -19,7 +19,8 @@ class CodeListBuilder extends EntityListBuilder {
     $header['name'] = $this->t('Nome');
     $header['guid'] = $this->t('GUID');
     $header['color'] = $this->t('Cor');
-    $header['is_codeble'] = $this->t('Pode ser código?');
+    $header['parent'] = $this->t('Código superior');
+    $header['is_codeble'] = $this->t('Pode ser usado?');
     $header['created'] = $this->t('Criado em');
     $header['changed'] = $this->t('Atualizado em');
     $header['operations'] = $this->t('Operações');
@@ -35,6 +36,8 @@ class CodeListBuilder extends EntityListBuilder {
     $row['name'] = $entity->label();
     $row['guid'] = $entity->get('guid')->value;
     $row['color'] = $this->getColorHTML($entity->get('color')->value);
+    $parent = $entity->get('parent')->entity;
+    $row['parent'] = $parent ? $parent->label() : '';
     $row['is_codeble'] = $entity->get('is_codeble')->value ? $this->t('Sim') : $this->t('Não');
     $row['created'] = $this->getFormatedDateTime($entity->get('created')->value);
     $row['changed'] = $this->getFormatedDateTime($entity->get('changed')->value);
