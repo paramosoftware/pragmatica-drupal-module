@@ -3,3 +3,9 @@ entity.pragmatica_code.add:
   title: 'Adicionar código'
   appears_on:
     - entity.pragmatica_code.collection
+
+entity.pragmatica_source.add:
+  route_name: entity.pragmatica_source.add_form
+  title: 'Adicionar fonte'
+  appears_on:
+    - entity.pragmatica_source.collection

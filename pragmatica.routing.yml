@@ -8,6 +8,11 @@ pragmatica.dashboard:
   options:
     _admin_route: TRUE
 
+
+###################################################
+############### Code routes #######################
+###################################################
+
 entity.pragmatica_code.collection:
   path: '/admin/pragmatica/code'
   defaults:
@@ -37,7 +42,6 @@ entity.pragmatica_code.add_form:
   options:
       _admin_route: TRUE
 
-
 entity.pragmatica_code.edit_form:
   path: '/admin/pragmatica/code/{pragmatica_code}/edit'
   defaults:
@@ -54,6 +58,116 @@ entity.pragmatica_code.delete_form:
   defaults:
     _entity_form: 'pragmatica_code.delete'
     _title: 'Apagar código'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+
+###################################################
+############### Source routes #####################
+###################################################
+
+entity.pragmatica_source.collection:
+  path: '/admin/pragmatica/source'
+  defaults:
+    _entity_list: 'pragmatica_source'
+    _title: 'Fontes'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_source.canonical:
+  path: '/admin/pragmatica/source/{pragmatica_source}'
+  defaults:
+    _entity_view: 'pragmatica_source'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_source.add_form:
+  path: '/admin/pragmatica/source/add'
+  defaults:
+    _entity_form: 'pragmatica_source.add'
+    _title: 'Adicionar fonte'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_source.edit_form:
+  path: '/admin/pragmatica/source/{pragmatica_source}/edit'
+  defaults:
+    _entity_form: 'pragmatica_source.edit'
+    _title: 'Editar fonte'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+
+entity.pragmatica_source.delete_form:
+  path: '/admin/pragmatica/source/{pragmatica_source}/delete'
+  defaults:
+    _entity_form: 'pragmatica_source.delete'
+    _title: 'Apagar fonte'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+
+###################################################
+############## Source types routes ################
+###################################################
+
+entity.pragmatica_source_type.collection:
+  path: '/admin/pragmatica/source_type'
+  defaults:
+    _entity_list: 'pragmatica_source_type'
+    _title: 'Fontes'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_source_type.canonical:
+  path: '/admin/pragmatica/source_type/{pragmatica_source_type}'
+  defaults:
+    _entity_view: 'pragmatica_source_type'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_source_type.add_form:
+  path: '/admin/pragmatica/source_type/add'
+  defaults:
+    _entity_form: 'pragmatica_source_type.add'
+    _title: 'Adicionar fonte'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_source_type.edit_form:
+  path: '/admin/pragmatica/source_type/{pragmatica_source_type}/edit'
+  defaults:
+    _entity_form: 'pragmatica_source_type.edit'
+    _title: 'Editar fonte'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+
+entity.pragmatica_source_type.delete_form:
+  path: '/admin/pragmatica/source_type/{pragmatica_source_type}/delete'
+  defaults:
+    _entity_form: 'pragmatica_source_type.delete'
+    _title: 'Apagar fonte'
   requirements:
     _permission: 'pragmatica'
   options:

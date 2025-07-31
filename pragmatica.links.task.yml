@@ -7,3 +7,13 @@ entity.pragmatica_code.edit_form:
   route_name: entity.pragmatica_code.edit_form
   base_route: entity.pragmatica_code.canonical
   title: Edit
+
+entity.pragmatica_source.canonical:
+  route_name: entity.pragmatica_source.canonical
+  base_route: entity.pragmatica_source.canonical
+  title: View
+
+entity.pragmatica_source.edit_form:
+  route_name: entity.pragmatica_source.edit_form
+  base_route: entity.pragmatica_source.canonical
+  title: Edit
