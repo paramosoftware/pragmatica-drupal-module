@@ -15,3 +15,9 @@ entity.pragmatica_selection.add:
   title: 'Adicionar seleção'
   appears_on:
       - entity.pragmatica_selection.collection
+
+entity.pragmatica_user.add:
+  route_name: entity.pragmatica_user.add_form
+  title: 'Adicionar usuário'
+  appears_on:
+    - entity.pragmatica_user.collection

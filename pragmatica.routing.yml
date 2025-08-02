@@ -8,7 +8,6 @@ pragmatica.dashboard:
   options:
     _admin_route: TRUE
 
-
 ###################################################
 ############### Code routes #######################
 ###################################################
@@ -280,3 +279,56 @@ entity.pragmatica_selection_type.delete_form:
     _permission: 'pragmatica'
   options:
     _admin_route: TRUE
+
+###################################################
+############### User routes #######################
+###################################################
+
+entity.pragmatica_user.collection:
+  path: '/admin/pragmatica/user'
+  defaults:
+    _entity_list: 'pragmatica_user'
+    _title: 'Usuários'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_user.canonical:
+  path: '/admin/pragmatica/user/{pragmatica_user}'
+  defaults:
+    _entity_view: 'pragmatica_user'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_user.add_form:
+  path: '/admin/pragmatica/user/add'
+  defaults:
+    _entity_form: 'pragmatica_user.add'
+    _title: 'Adicionar usuário'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_user.edit_form:
+  path: '/admin/pragmatica/user/{pragmatica_user}/edit'
+  defaults:
+    _entity_form: 'pragmatica_user.edit'
+    _title: 'Editar usuário'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_user.delete_form:
+  path: '/admin/pragmatica/user/{pragmatica_user}/delete'
+  defaults:
+    _entity_form: 'pragmatica_user.delete'
+    _title: 'Apagar usuário'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
