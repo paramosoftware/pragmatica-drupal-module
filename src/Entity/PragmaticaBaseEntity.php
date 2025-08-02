@@ -236,7 +236,7 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Criado em'))
-      ->setDescription(t('Data e hora em que o código foi criado.'))
+      ->setDescription(t('Data e hora da criação'))
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'datetime_default',
@@ -244,7 +244,8 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
       ]);
 
     $fields['changed'] = BaseFieldDefinition::create('changed')
-      ->setDescription(t('Modificado em'))
+      ->setLabel(t('Modificado em'))
+      ->setDescription(t('Data e hora da última modificação'))
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'datetime_default',

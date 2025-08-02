@@ -17,18 +17,21 @@ class PragmaticaBaseForm extends ContentEntityForm {
     return parent::buildForm($form, $form_state);
   }
 
-
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    if ($this->getEntity()->isNew()) {
-      $form_state->setValue('guid', Drupal::service('uuid')->generate());
+    if ($this->getEntity()->isNew() && $form_state->getValue('guid') === NULL) {
+      $form_state->setValue('guid', strtoupper(Drupal::service('uuid')->generate()));
     } else {
-      if (!$this->getEntity()->hasField('guid') || !$this->getEntity()->get('guid')->value) {
-        $form_state->setValue('guid', $this->getEntity()->get('guid')->value);
+      if ($this->getEntity()->hasField('guid')) {
+        $guid = $this->getEntity()->get('guid')->value;
+        if (empty($guid)) {
+          $form_state->setValue('guid', strtoupper(Drupal::service('uuid')->generate()));
+        }
       }
     }
+
     parent::submitForm($form, $form_state);
   }
 }
