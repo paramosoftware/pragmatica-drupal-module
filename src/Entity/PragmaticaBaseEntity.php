@@ -7,8 +7,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use ReflectionClass;
+use Exception;
 
 /**
  * Defines common fields and methods for Pragmatica entities.
@@ -57,6 +56,7 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
    * @param bool $remove_fields_not_in_order Whether to remove fields not in the order array.
    *
    * @return array The reordered fields with weights set according to the order.
+   * @throws Exception
    */
   public static function reorderFields(
     array $fields,
@@ -73,7 +73,7 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
         $fieldIndex = array_search($field_id, $order);
         $reordered_fields[$fieldIndex] = $field;
       } elseif ($remove_fields_not_in_order) {
-        unset($fields[$field_id]);
+      //  unset($fields[$field_id]);
       } else {
         $lastIndex++;
         $reordered_fields[$lastIndex] = $field;
@@ -87,6 +87,18 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
         if (!$display_options) { continue; }
         $display_options['weight'] = $weight;
         $field->setDisplayOptions($context, $display_options);
+      }
+    }
+
+    if (count($fields) != count($order)) {
+      $missing_fields = array_diff($order, array_keys($fields));
+      if (!empty($missing_fields)) {
+        throw new Exception(
+            'The following fields are missing from the entity: ' .
+            implode(', ', $missing_fields) . "\n" .
+            'Order fields: ' . implode(', ', $order) . "\n" .
+            'Fields: ' . implode(', ', array_keys($fields)) . "\n"
+        );
       }
     }
 
@@ -208,7 +220,7 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
         'weight' => 2,
       ]);
 
-    $fields['creating_user'] = BaseFieldDefinition::create('entity_reference')
+    $fields['creating_user_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Criado por'))
       ->setSetting('target_type', 'pragmatica_user')
       ->setDisplayOptions('form', [
@@ -221,7 +233,7 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
         'weight' => 3,
       ]);
 
-    $fields['modifying_user'] = BaseFieldDefinition::create('entity_reference')
+    $fields['modifying_user_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Alterado por'))
       ->setSetting('target_type', 'pragmatica_user')
       ->setDisplayOptions('form', [

@@ -45,7 +45,7 @@ class Source extends PragmaticaBaseEntity {
     return [
       'id',
       'guid',
-      'type',
+      'type_id',
       'name',
       'description',
       'plain_text',
@@ -53,27 +53,27 @@ class Source extends PragmaticaBaseEntity {
       'media',
       'url',
       'created',
-      'creating_user',
+      'creating_user_id',
       'changed',
-      'modifying_user',
+      'modifying_user_id'
     ];
   }
 
   public function getListHeaders(): array {
     $parent = parent::getListHeaders();
-    $header['type'] = t('Tipo');
+    $header['type_id'] = t('Tipo');
     return $this->addItemsAfterKeyInArray($header, $parent, 'name');
   }
 
   public function buildListRow(PragmaticaBaseEntity $entity): array {
     $row = parent::buildListRow($entity);
-    $row['type'] = $entity->get('type')->entity ? $entity->get('type')->entity->label() : '';
+    $row['type_id'] = $entity->get('type_id')->entity ? $entity->get('type_id')->entity->label() : '';
     return $row;
   }
 
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
-    $fields['type'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Tipo de Fonte'))
+    $fields['type_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Tipo'))
       ->setRequired(TRUE)
       ->setDefaultValue(1)
       ->setSetting('target_type', 'pragmatica_source_type')

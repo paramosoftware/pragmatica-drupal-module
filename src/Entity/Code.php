@@ -44,14 +44,14 @@ class Code extends PragmaticaBaseEntity {
       'id',
       'guid',
       'name',
-      'parent',
+      'parent_id',
       'is_codeble',
       'color',
       'description',
       'created',
-      'creating_user',
+      'creating_user_id',
       'changed',
-      'modifying_user',
+      'modifying_user_id'
     ];
   }
 
@@ -59,7 +59,7 @@ class Code extends PragmaticaBaseEntity {
   public function getListHeaders(): array {
     $parent = parent::getListHeaders();
     $header['color'] = t('Cor');
-    $header['parent'] = t('Código superior');
+    $header['parent_id'] = t('Código superior');
     $header['is_codeble'] = t('Pode ser usado?');
     return $this->addItemsAfterKeyInArray($header, $parent, 'name');
   }
@@ -67,8 +67,8 @@ class Code extends PragmaticaBaseEntity {
 
   public function buildListRow(PragmaticaBaseEntity $entity): array {
     $row = parent::buildListRow($entity);
-    $parent = $entity->get('parent')->entity;
-    $row['parent'] = $parent ? $parent->label() : '';
+    $parent = $entity->get('parent_id')->entity;
+    $row['parent_id'] = $parent ? $parent->label() : '';
     $row['color'] = $this->getColorHTML($entity->get('color')->value);
     $row['is_codeble'] = $entity->get('is_codeble')->value ? 'Sim' : 'Não';
     return $row;
@@ -109,8 +109,8 @@ class Code extends PragmaticaBaseEntity {
         'weight' => -2,
       ]);
 
-    $fields['parent'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Código pai'))
+    $fields['parent_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Código superior'))
       ->setDescription(t('Seleciona um código pai para este código.'))
       ->setSetting('target_type', 'pragmatica_code')
       ->setDisplayOptions('form', [

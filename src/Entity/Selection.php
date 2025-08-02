@@ -4,8 +4,6 @@ namespace Drupal\pragmatica\Entity;
 
 namespace Drupal\pragmatica\Entity;
 
-use Drupal\Core\Entity\ContentEntityBase;
-use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
 
@@ -45,10 +43,10 @@ class Selection extends PragmaticaBaseEntity {
     return [
       'id',
       'guid',
-      'type',
+      'type_id',
       'name',
       'description',
-      'source',
+      'source_id',
       'start_position',
       'end_position',
       'begin',
@@ -56,28 +54,30 @@ class Selection extends PragmaticaBaseEntity {
       'from_sync_point',
       'to_sync_point',
       'created',
-      'modifying_user',
+      'creating_user_id',
       'changed',
-      'creating_user',
+      'modifying_user_id'
     ];
   }
 
   public function getListHeaders(): array {
     $parent = parent::getListHeaders();
-    $header['type'] = t('Tipo');
+    $header['type_id'] = t('Tipo');
+    $header['source_id'] = t('Fonte');
     return $this->addItemsAfterKeyInArray($header, $parent, 'name');
   }
 
 
   public function buildListRow(PragmaticaBaseEntity $entity): array {
     $row = parent::buildListRow($entity);
-    $row['type'] = $entity->get('type')->entity ? $entity->get('type')->entity->label() : '';
+    $row['type_id'] = $entity->get('type_id')->entity ? $entity->get('type_id')->entity->label() : '';
+    $row['source_id'] = $entity->get('source_id')->entity ? $entity->get('source_id')->entity->label() : '';
     return $row;
   }
 
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
-    $fields['type'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Tipo da seleção'))
+    $fields['type_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Tipo'))
       ->setRequired(TRUE)
       ->setSetting('target_type', 'pragmatica_selection_type')
       ->setDefaultValue(1)
@@ -91,7 +91,7 @@ class Selection extends PragmaticaBaseEntity {
         'weight' => 1,
       ]);
 
-    $fields['source'] = BaseFieldDefinition::create('entity_reference')
+    $fields['source_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Fonte'))
       ->setSetting('target_type', 'pragmatica_source')
       ->setRequired(TRUE)
