@@ -21,12 +21,12 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "label" = "name"
  *   },
  *   handlers = {
- *     "list_builder" = "Drupal\pragmatica\ListBuilder\SelectionTypeListBuilder",
- *     "form" = {
- *       "add" = "Drupal\pragmatica\Form\SelectionTypeForm",
- *       "edit" = "Drupal\pragmatica\Form\SelectionTypeForm",
- *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
- *     }
+ *    "list_builder" = "Drupal\pragmatica\ListBuilder\PragmaticaBaseListBuilder",
+ *    "form" = {
+ *      "add" = "Drupal\pragmatica\Form\PragmaticaBaseForm",
+ *      "edit" = "Drupal\pragmatica\Form\PragmaticaBaseForm",
+ *      "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
+ *    }
  *   },
  *   links = {
  *      "canonical" = "/admin/pragmatica/selection_type/{pragmatica_selection_type}",
@@ -37,5 +37,13 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   },
  * )
  */
-class SelectionType extends BaseType {}
+class SelectionType extends PragmaticaBaseEntity {
+  public static function getFieldsIds(): array {
+    return ['id', 'guid', 'name', 'description', 'created', 'changed'];
+  }
+
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
+    return self::addBaseFieldDefinitions([], self::getFieldsIds());
+  }
+}
 

@@ -2,10 +2,10 @@
 
 namespace Drupal\pragmatica\Entity;
 
-use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\link\LinkItemInterface;
 
 /**
  * Defines the Source content entity.
@@ -16,17 +16,17 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   label_plural = @Translation("Fontes"),
  *   base_table = "pragmatica_source",
  *   admin_permission = "pragmatica",
- *   handlers = {
- *     "list_builder" = "Drupal\pragmatica\ListBuilder\SourceListBuilder",
- *     "form" = {
- *       "add" = "Drupal\pragmatica\Form\SourceForm",
- *       "edit" = "Drupal\pragmatica\Form\SourceForm",
- *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
- *     }
- *   },
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "name"
+ *   },
+ *   handlers = {
+ *     "list_builder" = "Drupal\pragmatica\ListBuilder\PragmaticaBaseListBuilder",
+ *     "form" = {
+ *       "add" = "Drupal\pragmatica\Form\PragmaticaBaseForm",
+ *       "edit" = "Drupal\pragmatica\Form\PragmaticaBaseForm",
+ *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
+ *     }
  *   },
  *   links = {
  *     "canonical" = "/admin/pragmatica/source/{pragmatica_source}",
@@ -37,31 +37,45 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   }
  * )
  */
-class Source extends ContentEntityBase {
+class Source extends PragmaticaBaseEntity {
 
   use EntityChangedTrait;
 
+  public static function getFieldsIds(): array {
+    return [
+      'id',
+      'guid',
+      'type',
+      'name',
+      'description',
+      'plain_text',
+      'file',
+      'media',
+      'url',
+      'created',
+      'creating_user',
+      'changed',
+      'modifying_user',
+    ];
+  }
+
+  public function getListHeaders(): array {
+    $parent = parent::getListHeaders();
+    $header['type'] = t('Tipo');
+    return $this->addItemsAfterKeyInArray($header, $parent, 'name');
+  }
+
+  public function buildListRow(PragmaticaBaseEntity $entity): array {
+    $row = parent::buildListRow($entity);
+    $row['type'] = $entity->get('type')->entity ? $entity->get('type')->entity->label() : '';
+    return $row;
+  }
+
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
-    $fields = parent::baseFieldDefinitions($entity_type);
-
-    $fields['guid'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('GUID'))
-      ->setRequired(TRUE)
-      ->setSetting('max_length', 36)
-      ->setDescription(t('Código único global (GUID) de identificação.'))
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -5,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -5,
-      ]);
-
     $fields['type'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Tipo de Fonte'))
       ->setRequired(TRUE)
+      ->setDefaultValue(1)
       ->setSetting('target_type', 'pragmatica_source_type')
       ->setDisplayOptions('form', [
         'type' => 'options_select',
@@ -71,32 +85,6 @@ class Source extends ContentEntityBase {
         'label' => 'above',
         'type' => 'entity_reference_label',
         'weight' => -4,
-      ]);
-
-    $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Nome'))
-      ->setRequired(TRUE)
-      ->setSettings(['max_length' => 255])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -3,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -3,
-      ]);
-
-    $fields['description'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('Descrição'))
-      ->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => -2,
-      ])->
-      setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'text_default',
-        'weight' => -2,
       ]);
 
     $fields['plain_text'] = BaseFieldDefinition::create('string_long')
@@ -142,7 +130,7 @@ class Source extends ContentEntityBase {
     $fields['url'] = BaseFieldDefinition::create('link')
       ->setLabel(t('URL'))
       ->setDescription(t('URL da fonte, se aplicável.'))
-      ->setSetting('link_type', \Drupal\link\LinkItemInterface::LINK_EXTERNAL)
+      ->setSetting('link_type', LinkItemInterface::LINK_EXTERNAL)
       ->setDisplayOptions('form', [
         'type' => 'link_default',
         'weight' => 6,
@@ -153,14 +141,7 @@ class Source extends ContentEntityBase {
         'weight' => 6,
       ]);
 
-
-    $fields['created'] = BaseFieldDefinition::create('created')
-      ->setLabel(t('Criado'));
-
-    $fields['changed'] = BaseFieldDefinition::create('changed')
-      ->setLabel(t('Modificado'));
-
-    return $fields;
+    return parent::addBaseFieldDefinitions($fields, self::getFieldsIds());
   }
 
 }

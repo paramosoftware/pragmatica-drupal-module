@@ -5,7 +5,7 @@ namespace Drupal\pragmatica\Form;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
 
-class SelectionForm extends ContentEntityForm {
+class SelectionForm extends PragmaticaBaseForm {
 
   /**
    * {@inheritdoc}
@@ -33,13 +33,4 @@ class SelectionForm extends ContentEntityForm {
 
     return $form;
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-  }
-
-
 }

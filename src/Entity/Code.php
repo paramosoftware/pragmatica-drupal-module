@@ -3,10 +3,9 @@
 namespace Drupal\pragmatica\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
-use Drupal\Core\Entity\EntityChangedTrait;
-use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Render\Markup;
 
 /**
  * Defines the Code entity.
@@ -21,7 +20,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "label" = "name"
  *   },
  *   handlers = {
- *     "list_builder" = "Drupal\pragmatica\ListBuilder\CodeListBuilder",
+ *     "list_builder" = "Drupal\pragmatica\ListBuilder\PragmaticaBaseListBuilder",
  *     "form" = {
  *       "add" = "Drupal\pragmatica\Form\CodeForm",
  *       "edit" = "Drupal\pragmatica\Form\CodeForm",
@@ -38,46 +37,51 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   admin_permission = "pragmatica",
  * )
  */
-class Code extends ContentEntityBase {
-  use EntityChangedTrait;
-  use EntityPublishedTrait;
+class Code extends PragmaticaBaseEntity {
+
+  public static function getFieldsIds(): array {
+    return [
+      'id',
+      'guid',
+      'name',
+      'parent',
+      'is_codeble',
+      'color',
+      'description',
+      'created',
+      'creating_user',
+      'changed',
+      'modifying_user',
+    ];
+  }
+
+
+  public function getListHeaders(): array {
+    $parent = parent::getListHeaders();
+    $header['color'] = t('Cor');
+    $header['parent'] = t('Código superior');
+    $header['is_codeble'] = t('Pode ser usado?');
+    return $this->addItemsAfterKeyInArray($header, $parent, 'name');
+  }
+
+
+  public function buildListRow(PragmaticaBaseEntity $entity): array {
+    $row = parent::buildListRow($entity);
+    $parent = $entity->get('parent')->entity;
+    $row['parent'] = $parent ? $parent->label() : '';
+    $row['color'] = $this->getColorHTML($entity->get('color')->value);
+    $row['is_codeble'] = $entity->get('is_codeble')->value ? 'Sim' : 'Não';
+    return $row;
+  }
+
+  private function getColorHTML($color = '') {
+    return Markup::create('<div style="width: 20px; height: 20px; background-color: ' . htmlspecialchars($color) . '; border: 1px solid #ccc;"></div>');
+  }
 
   /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
-    $fields = parent::baseFieldDefinitions($entity_type);
-
-    $fields['guid'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('GUID'))
-      ->setRequired(TRUE)
-      ->setSetting('max_length', 36)
-      ->setDescription(t('Código único global (GUID) para identificar o código.'))
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -5,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -5,
-      ]);
-
-    $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Nome'))
-      ->setDescription(t('Nome do código.'))
-      ->setRequired(TRUE)
-      ->setSetting('max_length', 255)
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ]);
-
     $fields['is_codeble'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Pode ser usado como código?'))
       ->setDefaultValue(TRUE)
@@ -105,19 +109,6 @@ class Code extends ContentEntityBase {
         'weight' => -2,
       ]);
 
-    $fields['description'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('Descrição'))
-      ->setDescription(t('Descrição detalhada do código.'))
-      ->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => -1,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'text_default',
-        'weight' => -1,
-      ]);
-
     $fields['parent'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Código pai'))
       ->setDescription(t('Seleciona um código pai para este código.'))
@@ -132,28 +123,6 @@ class Code extends ContentEntityBase {
         'weight' => -6,
       ]);
 
-    $fields['created'] = BaseFieldDefinition::create('created')
-      ->setLabel(t('Criado em'))
-      ->setDescription(t('Data e hora em que o código foi criado.'))
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'datetime_default',
-        'weight' => 1,
-      ]);
-
-    $fields['changed'] = BaseFieldDefinition::create('changed')
-      ->setLabel(t('Modificado em'))
-      ->setDescription(t('Data e hora da última modificação do código.'))
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'datetime_default',
-        'weight' => 2,
-      ]);
-
-    return $fields;
-  }
-
-  function getCreatedTime() {
-    return $this->get('created')->value;
+      return self::addBaseFieldDefinitions($fields, self::getFieldsIds());
   }
 }

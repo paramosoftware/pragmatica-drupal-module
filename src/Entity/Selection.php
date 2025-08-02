@@ -17,18 +17,18 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   label = @Translation("Seleção"),
  *   label_plural = @Translation("Seleções"),
  *   base_table = "pragmatica_selection",
- *   admin_permission = "administer pragmatica selection",
+ *   admin_permission = "pragmatica",
+ *   entity_keys = {
+ *     "id" = "id",
+ *     "label" = "name"
+ *   },
  *   handlers = {
+ *   "list_builder" = "Drupal\pragmatica\ListBuilder\PragmaticaBaseListBuilder",
  *     "form" = {
  *       "add" = "Drupal\pragmatica\Form\SelectionForm",
  *       "edit" = "Drupal\pragmatica\Form\SelectionForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
  *     },
- *     "list_builder" = "Drupal\pragmatica\ListBuilder\SelectionListBuilder"
- *   },
- *   entity_keys = {
- *     "id" = "id",
- *     "label" = "name"
  *   },
  *   links = {
  *     "canonical" = "/admin/pragmatica/selection/{pragmatica_selection}",
@@ -39,27 +39,43 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   }
  * )
  */
-class Selection extends ContentEntityBase {
-  use EntityChangedTrait;
+class Selection extends PragmaticaBaseEntity {
+
+  public static function getFieldsIds(): array {
+    return [
+      'id',
+      'guid',
+      'type',
+      'name',
+      'description',
+      'source',
+      'start_position',
+      'end_position',
+      'begin',
+      'end',
+      'from_sync_point',
+      'to_sync_point',
+      'created',
+      'modifying_user',
+      'changed',
+      'creating_user',
+    ];
+  }
+
+  public function getListHeaders(): array {
+    $parent = parent::getListHeaders();
+    $header['type'] = t('Tipo');
+    return $this->addItemsAfterKeyInArray($header, $parent, 'name');
+  }
+
+
+  public function buildListRow(PragmaticaBaseEntity $entity): array {
+    $row = parent::buildListRow($entity);
+    $row['type'] = $entity->get('type')->entity ? $entity->get('type')->entity->label() : '';
+    return $row;
+  }
 
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
-    $fields = parent::baseFieldDefinitions($entity_type);
-
-    $fields['guid'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('GUID'))
-      ->setRequired(TRUE)
-      ->setSetting('max_length', 36)
-      ->setDescription(t('Código único global (GUID) de identificação.'))
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => 0,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => 0,
-      ]);
-
     $fields['type'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Tipo da seleção'))
       ->setRequired(TRUE)
@@ -75,31 +91,6 @@ class Selection extends ContentEntityBase {
         'weight' => 1,
       ]);
 
-    $fields['name'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('Nome'))
-      ->setRequired(TRUE)
-      ->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => 2,
-      ])
-      ->setDisplayOptions('view', [
-        'type' => 'string',
-        'label' => 'above',
-        'weight' => 2,
-      ]);
-
-    $fields['description'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('Descrição'))
-      ->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => 3,
-      ])->
-      setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'text_default',
-        'weight' => 3,
-      ]);
-
     $fields['source'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Fonte'))
       ->setSetting('target_type', 'pragmatica_source')
@@ -113,7 +104,6 @@ class Selection extends ContentEntityBase {
         'type' => 'entity_reference_label',
         'weight' => 4,
       ]);
-
 
     $fields['start_position'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Posição inicial do texto'))
@@ -195,12 +185,6 @@ class Selection extends ContentEntityBase {
         'weight' => 9,
       ]);
 
-    $fields['created'] = BaseFieldDefinition::create('created')
-      ->setLabel(t('Criado em'));
-
-    $fields['changed'] = BaseFieldDefinition::create('changed')
-      ->setLabel(t('Modificado em'));
-
-    return $fields;
+    return self::addBaseFieldDefinitions($fields, self::getFieldsIds());
   }
 }

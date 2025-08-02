@@ -5,11 +5,10 @@ namespace Drupal\pragmatica\Form;
 namespace Drupal\pragmatica\Form;
 
 use Drupal;
-use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\pragmatica\Entity\Code;
 
-class CodeForm extends ContentEntityForm {
+class CodeForm extends PragmaticaBaseForm {
 
   /**
    * {@inheritdoc}
