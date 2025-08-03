@@ -55,6 +55,14 @@ class Code extends PragmaticaBaseEntity {
     ];
   }
 
+  public static function getFieldsToXmlMapping(): array {
+    $mapping = [
+      'is_codeble' => 'isCodeble',
+      'color' => 'color',
+    ];
+
+    return parent::addFieldsToXmlMapping($mapping, self::getFieldsIds());
+  }
 
   public function getListHeaders(): array {
     $parent = parent::getListHeaders();

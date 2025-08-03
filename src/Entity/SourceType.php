@@ -38,12 +38,18 @@ use Drupal\Core\Field\BaseFieldDefinition;
  * )
  */
 class SourceType extends PragmaticaBaseEntity {
+
   public static function getFieldsIds(): array {
     return ['id', 'guid', 'name', 'description', 'created', 'changed'];
+  }
+
+  public static function getFieldsToXmlMapping(): array {
+    return parent::addFieldsToXmlMapping([], self::getFieldsIds());
   }
 
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     return self::addBaseFieldDefinitions([], self::getFieldsIds());
   }
+
 }
 

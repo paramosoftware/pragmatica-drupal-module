@@ -20,5 +20,8 @@
             "email": "contato@paramosoftware.com.br"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-simplexml": "*",
+        "ext-zip": "*"
+    }
 }

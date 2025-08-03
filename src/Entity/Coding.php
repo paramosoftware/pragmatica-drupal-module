@@ -49,6 +49,10 @@ class Coding extends PragmaticaBaseEntity {
     ];
   }
 
+  public static function getFieldsToXmlMapping(): array {
+    return parent::addFieldsToXmlMapping([], self::getFieldsIds());
+  }
+
   public function getListHeaders(): array {
     $parent = parent::getListHeaders();
     $header['selection_id'] = t('Seleção');

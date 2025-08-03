@@ -35,9 +35,16 @@ class ImportForm extends FormBase {
 
     $form['keep_file'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Manter arquivo após importação'),
+      '#title' => $this->t('Manter arquivo após importação?'),
       '#default_value' => false,
-      '#description' => $this->t('Se marcado, o arquivo será mantido após a importação.'),
+      '#description' => $this->t('Se marcado, o arquivo enviado será mantido após a importação no sistema de arquivos do Drupal.'),
+    ];
+
+    $form['save_rich_text_files'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Salvar o arquivo das fonte em formato docx?'),
+      '#default_value' => false,
+      '#description' => $this->t('Se marcado, os arquivos docx serão salvos no sistema de arquivos do Drupal e associados às fontes.'),
     ];
 
     $form['submit'] = [
@@ -48,12 +55,21 @@ class ImportForm extends FormBase {
     return $form;
   }
 
+
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $validators = ['file_validate_extensions' => [implode(' ', $this->getAcceptedExtensions())]];
-    $keep_file = $form_state->getValue('keep_file');
-    $files = file_save_upload($this->getInputFileName(), $validators, $keep_file ? 'private://' : false, null, FileSystemInterface::EXISTS_REPLACE);
+    $keep_file = $form_state->getValue('keep_file') ?? false;
+    $save_rich_text_files = $form_state->getValue('save_rich_text_files') ?? false;
 
-    if (empty($files)) {
+    $files = file_save_upload(
+      $this->getInputFileName(),
+      $validators,
+      $keep_file ? (QDEImporter::getPragmaticaDestinationFolder() . '/') : false,
+      null,
+      FileSystemInterface::EXISTS_REPLACE
+    );
+
+    if (empty($files) || empty($files[0])) {
       $this->messenger()->addError($this->t('Erro ao fazer upload do arquivo.'));
       return;
     }
@@ -85,9 +101,11 @@ class ImportForm extends FormBase {
        $xmlFilePath,
        $sourcesFolderPath,
        Drupal::service('entity_type.manager'),
-       Drupal::service('logger.factory')
+       Drupal::service('logger.factory'),
+       $save_rich_text_files
      );
 
+    // @todo: use batch api to show progress (https://git.drupalcode.org/project/examples/-/blob/3.0.4/modules/batch_example/src/Form/BatchExampleForm.php)
     try {
       $importService->import();
       $this->messenger()->addStatus($this->t('Importação concluída com sucesso.'));

@@ -49,14 +49,24 @@ class Source extends PragmaticaBaseEntity {
       'name',
       'description',
       'plain_text',
-      'file',
-      'media',
+      'rich_text_file',
+      'media_file',
       'url',
       'created',
       'creating_user_id',
       'changed',
       'modifying_user_id'
     ];
+  }
+
+  public static function getFieldsToXmlMapping(): array {
+    $mapping = [
+      'plain_text' => 'plainTextPath',
+      'rich_text_file' => 'richTextPath',
+      'media_file' => 'path'
+    ];
+
+    return parent::addFieldsToXmlMapping($mapping, self::getFieldsIds());
   }
 
   public function getListHeaders(): array {
@@ -99,7 +109,7 @@ class Source extends PragmaticaBaseEntity {
         'weight' => 3,
       ]);
 
-    $fields['file'] = BaseFieldDefinition::create('file')
+    $fields['rich_text_file'] = BaseFieldDefinition::create('file')
       ->setLabel(t('Arquivo da fonte em formato rich text'))
       ->setDescription(t('Carregue um arquivo DOCX contendo o texto da fonte.'))
       ->setSetting('file_extensions', 'docx')
@@ -113,10 +123,10 @@ class Source extends PragmaticaBaseEntity {
         'weight' => 4,
       ]);
 
-    $fields['media'] = BaseFieldDefinition::create('file')
+    $fields['media_file'] = BaseFieldDefinition::create('file')
       ->setLabel(t('Arquivo de mídia'))
       ->setDescription(t('Carregue um arquivo de mídia relacionado à fonte: áudio, vídeo, imagem ou documento.'))
-      ->setSetting('file_extensions', 'mp3,mp4,pdf,jpg,jpeg,png')
+      ->setSetting('file_extensions', 'mp3 mp4 pdf jpg jpeg png')
       ->setDisplayOptions('form', [
         'type' => 'file_generic',
         'weight' => 5,

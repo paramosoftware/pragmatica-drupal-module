@@ -60,6 +60,17 @@ class Selection extends PragmaticaBaseEntity {
     ];
   }
 
+  public static function getFieldsToXmlMapping(): array {
+    $mapping = [
+      'start_position' => 'startPosition',
+      'end_position' => 'endPosition',
+      'begin' => 'begin',
+      'end' => 'end'
+    ];
+
+    return parent::addFieldsToXmlMapping($mapping, self::getFieldsIds());
+  }
+
   public function getListHeaders(): array {
     $parent = parent::getListHeaders();
     $header['type_id'] = t('Tipo');

@@ -28,8 +28,13 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
    */
   public abstract static function getFieldsIds(): array;
 
-  public function getFieldsToXmlMapping(): array {
-    return [
+  public abstract static function getFieldsToXmlMapping(): array;
+
+  public static function addFieldsToXmlMapping(
+    $instanceMapping = [],
+    $instanceFieldsIds = []
+  ): array {
+    $mapping = [
       'guid' => 'guid',
       'name' => 'name',
       'description' => 'Description',
@@ -38,6 +43,16 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
       'created' => 'creationDateTime',
       'changed' => 'modifiedDateTime',
     ];
+
+    $mapping = array_merge($mapping, $instanceMapping);
+
+    foreach ($mapping as $field => $xml_key) {
+      if (!in_array($field, $instanceFieldsIds)) {
+        unset($mapping[$field]);
+      }
+    }
+
+    return $mapping;
   }
 
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
