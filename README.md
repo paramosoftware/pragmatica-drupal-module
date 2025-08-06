@@ -24,18 +24,59 @@ Depois de instalar o Drupal, siga as instruções abaixo para instalar o módulo
 
 ## Comandos do Drush
 
-O executável do Drush deve estar instaldo em `./vendor/bin/drush`. Para evitar problema com permissões, é recomendado
+O executável do Drush deve estar instalado em `./vendor/bin/drush`. Para evitar problema com permissões, é recomendado
 executar os comandos do Drush como o usuário do servidor web, como a seguir:
 
 ```bash
 sudo -u www-data ./vendor/bin/drush <comando>
 ```
 
-**Limpeza de cache:** `drush cr` ou `drush cache-rebuild`
-**Atualização do banco de dados:** `drush updb` ou `drush updatedb`
-**Verificar atualizações nas Entities:** `drush updbst` ou `drush updatedb:status`
+- **Limpeza de cache:** `drush cr` ou `drush cache:rebuild`
+- **Atualização do banco de dados:** `drush updb` ou `drush updatedb`
+- **Verificar atualizações nas Entities:** `drush updbst` ou `drush updatedb:status`
+- **Instalar módulo:** `drush en nome_do_modulo -y`
+- **Desinstalar módulo:** `drush pmu nome_do_modulo`
+
+
+## Organização do código
+
+O código do módulo Pragmática está organizado em pastas, seguindo a estrutura de entidades e campos do Drupal:
+
+```
+pragmatica/
+├── src/
+│   ├── Controller/          # Controladores para rotas e páginas do módulo
+│   ├── Entity/              # Definições de entidades personalizadas
+│   ├── Form/                # Formulários para criação e edição de entidades
+│   ├── Importer/            # Classes para importação de dados
+│   ├── ListBuilder/         # Classes para construção de listas de entidades
+```
+
+Para criar uma nova entidade, o mínimo necessário é criar uma classe que estenda a classe `PragmaticaBaseEntity` e
+implemente os métodos necessários. A classe deve ser colocada na pasta `src/Entity/`. Depois, é necessário registrar as
+rotas no arquivo `pragmatica.routing.yml` e item no menu no arquivo `pragmatica.links.menu.yml`.
+
+## Links úteis
+
+[Defining and using Content Entity Field definitions](https://www.drupal.org/docs/drupal-apis/entity-api/defining-and-using-content-entity-field-definitions) - Resumo dos usos dos diferentes tipos de campos e configurações para as entidades de conteúdo.
+[FieldTypes, FieldWidgets and FieldFormatters](https://www.drupal.org/docs/drupal-apis/entity-api/fieldtypes-fieldwidgets-and-fieldformatters) - Resumo dos tipos de campos, widgets e formatadores disponíveis no Drupal.
+https://git.drupalcode.org/project/examples - Repositório com exemplos das principais funcionalidades do Drupal.
 
 ## Problemas conhecidos
+
+## Erros no módulo ```copyprevention```
+
+Ao acessar uma página pública, deslogado, o módulo `copyprevention` gera erros, como o seguinte:
+
+```
+TypeError: array_filter(): Argument #1 ($array) must be of type array, null given in array_filter() (line 72 of modules/contrib/copyprevention/copyprevention.module).
+```
+
+Para solucionar o problema, é necessário desativar o módulo `copyprevention` com o comando:
+
+```bash
+sudo -u www-data ./vendor/bin/drush pmu copyprevention
+```
 
 ## Atualização do banco de dados
 Por alguma razão, o schema do banco de dados não é atualizado automaticamente ao executar `drush updb`, apesar de alterações
