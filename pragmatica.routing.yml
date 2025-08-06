@@ -18,6 +18,27 @@ pragmatica.import:
   options:
     _admin_route: TRUE
 
+pragmatica.source_public_list:
+  path: '/pragmatica/fontes'
+  defaults:
+    _controller: '\Drupal\pragmatica\Controller\SourcePublicController::list'
+    _title: 'Fontes'
+  requirements:
+    _access: 'TRUE'
+
+pragmatica.source_public_item:
+  path: '/pragmatica/fonte/{pragmatica_source}'
+  defaults:
+    _controller: '\Drupal\pragmatica\Controller\SourcePublicController::item'
+    _title_callback: '\Drupal\pragmatica\Controller\SourcePublicController::itemTitle'
+  requirements:
+    pragmatica_source: \d+
+    _access: 'TRUE'
+  options:
+    parameters:
+      pragmatica_source:
+        type: 'entity:pragmatica_source'
+
 ###################################################
 ############### Code routes #######################
 ###################################################

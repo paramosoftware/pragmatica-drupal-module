@@ -1,0 +1,23 @@
+<div class="pragmatica">
+  <div class="pragmatica-header">
+    <h1 class="pragmatica-title">{{ source.name.value }}</h1>
+    {# <div class="pragmatica-tag">{{ source.type_id.entity.label }}</div> #}
+  </div>
+  <div class="pragmatica-meta">
+    <p>{{ 'Adicionado em'|t }} {{ source.created.value|date('d/m/Y') }}</p>
+  </div>
+  <div class="pragmatica-content">
+    {% if source.description.value %}
+      <div class="pragmatica-description">
+        {{ source.description.value|trim }}
+      </div>
+    {% endif %}
+    {% if source.plain_text.value %}
+      <p class="pragmatica-plain-text">{{ source.plain_text.value|trim }}</p>
+    {% endif %}
+  </div>
+  <a href="{{ path('pragmatica.source_public_list') }}" class="pragmatica-back-link">
+    ← {{ 'Voltar para lista de fontes'|t }}
+  </a>
+</div>
+

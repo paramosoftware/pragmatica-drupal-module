@@ -1,3 +1,14 @@
+#################### PRAGMÁTICA PUBLIC MENU ####################
+
+pragmatica.sources:
+  title: 'Fontes'
+  description: 'Visualizar fontes'
+  route_name: pragmatica.source_public_list
+  menu_name: main
+  weight: 1
+
+#################### PRAGMÁTICA ADMIN MENU ####################
+
 pragmatica.admin:
   title: 'Pragmática'
   description: 'Acessar o módulo Pragmática.'
