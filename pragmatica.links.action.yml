@@ -45,3 +45,9 @@ entity.pragmatica_country.add:
   title: 'Adicionar país'
   appears_on:
     - entity.pragmatica_country.collection
+
+entity.pragmatica_region.add:
+  route_name: entity.pragmatica_region.add_form
+  title: 'Adicionar região'
+  appears_on:
+    - entity.pragmatica_region.collection

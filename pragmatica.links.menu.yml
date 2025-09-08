@@ -115,4 +115,11 @@ pragmatica.config.country:
   route_name: entity.pragmatica_country.collection
   parent: pragmatica.admin
   menu_name: admin
-  weight: 5
+  weight: 6
+
+pragmatica.config.region:
+  title: 'Regiões'
+  route_name: entity.pragmatica_region.collection
+  parent: pragmatica.admin
+  menu_name: admin
+  weight: 7

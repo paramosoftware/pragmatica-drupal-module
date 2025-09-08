@@ -617,3 +617,57 @@ entity.pragmatica_country.delete_form:
     _permission: 'pragmatica'
   options:
     _admin_route: TRUE
+
+
+###################################################
+############## Region routes ################
+###################################################
+
+entity.pragmatica_region.collection:
+  path: '/admin/pragmatica/region'
+  defaults:
+    _entity_list: 'pragmatica_region'
+    _title: 'Regiões'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_region.canonical:
+  path: '/admin/pragmatica/region/{pragmatica_region}'
+  defaults:
+    _entity_view: 'pragmatica_region'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_region.add_form:
+  path: '/admin/pragmatica/region/add'
+  defaults:
+    _entity_form: 'pragmatica_region.add'
+    _title: 'Adicionar região'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_region.edit_form:
+  path: '/admin/pragmatica/region/{pragmatica_region}/edit'
+  defaults:
+    _entity_form: 'pragmatica_region.edit'
+    _title: 'Editar região'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_region.delete_form:
+  path: '/admin/pragmatica/region/{pragmatica_region}/delete'
+  defaults:
+    _entity_form: 'pragmatica_region.delete'
+    _title: 'Apagar região'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
