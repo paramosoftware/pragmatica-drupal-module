@@ -77,7 +77,7 @@ class Region extends PragmaticaBaseEntity {
           ->setLabel(t('País'))
           ->setDescription(t('País associado'))
           ->setSetting('target_type', 'pragmatica_country')
-          ->setRequired(TRUE)
+          ->setRequired(FALSE)
           ->setDisplayOptions('form', [
             'type' => 'entity_reference_autocomplete',
             'weight' => 0,
