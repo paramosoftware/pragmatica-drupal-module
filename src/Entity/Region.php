@@ -52,7 +52,7 @@ class Region extends PragmaticaBaseEntity {
     return parent::addFieldsToXmlMapping([], self::getFieldsIds());
   }
 
-    public function getListHeaders(): array {
+  public function getListHeaders(): array {
     $parent = parent::getListHeaders();
     $header['country_id'] = t('País');
     return $this->addItemsAfterKeyInArray($header, $parent, 'id');

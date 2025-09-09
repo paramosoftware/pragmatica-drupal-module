@@ -833,3 +833,58 @@ entity.pragmatica_education.delete_form:
     _permission: 'pragmatica'
   options:
     _admin_route: TRUE
+
+
+
+###################################################
+############## Situation routes ################
+###################################################
+
+entity.pragmatica_situation.collection:
+  path: '/admin/pragmatica/situation'
+  defaults:
+    _entity_list: 'pragmatica_situation'
+    _title: 'Situações'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_situation.canonical:
+  path: '/admin/pragmatica/situation/{pragmatica_situation}'
+  defaults:
+    _entity_view: 'pragmatica_situation'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_situation.add_form:
+  path: '/admin/pragmatica/situation/add'
+  defaults:
+    _entity_form: 'pragmatica_situation.add'
+    _title: 'Adicionar situação'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_situation.edit_form:
+  path: '/admin/pragmatica/situation/{pragmatica_situation}/edit'
+  defaults:
+    _entity_form: 'pragmatica_situation.edit'
+    _title: 'Editar situação'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+entity.pragmatica_situation.delete_form:
+  path: '/admin/pragmatica/situation/{pragmatica_situation}/delete'
+  defaults:
+    _entity_form: 'pragmatica_situation.delete'
+    _title: 'Apagar situação'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE

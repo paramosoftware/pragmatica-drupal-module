@@ -69,3 +69,9 @@ entity.pragmatica_education.add:
   title: 'Adicionar escolaridade'
   appears_on:
     - entity.pragmatica_education.collection
+
+entity.pragmatica_situation.add:
+  route_name: entity.pragmatica_situation.add_form
+  title: 'Adicionar situação'
+  appears_on:
+    - entity.pragmatica_situation.collection
