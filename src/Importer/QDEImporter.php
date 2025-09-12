@@ -523,4 +523,90 @@ class QDEImporter {
     return $destination_folder;
   }
 
-}
+  /**
+   * Get the default/translated values for XML elements.
+   *
+   * @param string $input XML value - presumibly in another language - to be matched/translated.
+   *
+   * @return string default value corresponding to $input; '' (empty string) when a corresponding value is not found.
+   *
+   */
+  protected function getDefaultXmlElementInformant(string $input): string {
+    $header_text = "header";
+    $age_text = "age";
+    $gender_text = "gender";
+    $hometown_text = "hometown";
+    $city_of_residency_text = "city_of_residency";
+    $native_language_text = "native_language";
+    $profession_text = "profession";
+    
+    $mapping = array();
+    $mapping["cabeçalho"] = $header_text;
+    $mapping["età"] = $mapping["idade"] = $age_text;
+    $mapping["genere"] = $mapping["gênero"] = $gender_text;
+    $mapping["città di nascita"] = $mapping["cidade natal"] = $hometown_text;
+    $mapping["città di residenza"] = $mapping["cidade de residência"] = $city_of_residency_text;
+    $mapping["lingua materna"] = $mapping["língua materna"] = $native_language_text;
+    $mapping["profissão"] = $profession_text;
+
+    return isset($mapping[strtolower($input)]) ? $mapping[strtolower($input)] : "";
+  }
+
+
+  /**
+   * Parses the Source into informants.
+   *
+   * @param string $text source text for parsing.
+   *
+   * @return array array with multiple informants' headers, numbers and answers.
+   *
+   */
+  protected function parseSource(string $text) {
+    $text = explode(PHP_EOL, $text);
+    $informants = [];
+    $informant_number = -1;
+    $header = "";
+    $answers = "";
+  
+    for($i=0; $i < count($text); $i++) {
+      if(empty(trim($text[$i]))) {
+        continue;
+      }
+      elseif(preg_match('/^#\d+$/', $text[$i])) {
+        if($informant_number > -1) {
+          $informants[] = [
+            "informant_number" => $informant_number,
+            "header" => $header,
+            "answers" => $answers
+          ];
+        }
+
+        $informant_number = (int)ltrim($text[$i], '#');
+        $answers = "";
+      }
+      elseif($this->getDefaultXmlElementInformant(trim($text[$i], '</>')) == "header") {
+        $header_text = trim($text[$i], '</>');
+        $header = "";
+
+        do {
+          $header .= $text[$i].PHP_EOL;
+          $i++;
+        } while($i < count($text) && $this->getDefaultXmlElementInformant(trim($text[$i], '</>')) != "header");
+        
+        $header .= "</" . $header_text . ">";
+      }
+      
+      $answers .= (!empty($answers) ? PHP_EOL : '') . $text[$i];
+    }
+
+    if($informant_number > -1) {
+      $informants[] = [
+        "informant_number" => $informant_number,
+        "header" => $header,
+        "answers" => $answers
+      ];
+    }
+
+    return $informants;
+  }
+
