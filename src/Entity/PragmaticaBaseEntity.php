@@ -66,7 +66,7 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
   ): array {
     $base_fields = self::getBaseFieldDefinitions();
     foreach ($base_fields as $field_id => $field_definition) {
-      if (in_array($field_id, $fields_ids)) {
+      if (in_array($field_id, $fields_ids) && !isset($fields[$field_id])) {
         $fields[$field_id] = $field_definition;
       }
     }
