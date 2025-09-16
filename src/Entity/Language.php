@@ -9,8 +9,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *
  * @ContentEntityType(
  *   id = "pragmatica_language",
- *   label = @Translation("Linguagem"),
- *   label_plural = @Translation("Linguagens"),
+ *   label = @Translation("Língua"),
+ *   label_plural = @Translation("Línguas"),
  *   base_table = "pragmatica_language",
  *   admin_permission = "pragmatica",
  *   entity_keys = {
