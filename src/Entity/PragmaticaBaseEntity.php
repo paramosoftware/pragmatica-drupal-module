@@ -36,6 +36,7 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
   ): array {
     $mapping = [
       'guid' => 'guid',
+      'code' => 'code',
       'name' => 'name',
       'description' => 'Description',
       'creating_user_id' => 'creatingUser',
@@ -164,6 +165,7 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
   public function getListHeaders(): array {
     return [
       'id' => t('ID'),
+      'code' => t('Código'),
       'name' => t('Nome'),
       'changed' => t('Modificado em'),
     ];
@@ -172,6 +174,7 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
   public function buildListRow(PragmaticaBaseEntity $entity): array {
     return [
       'id' => $entity->id(),
+      'code' => $entity->hasField('code') ? $entity->get('code')->value : '',
       'name' => $entity->hasField('name') ? $entity->get('name')->value : '',
       'changed' => $entity->getDisplayDateTimeFormatted('changed', $entity),
     ];
@@ -206,15 +209,30 @@ abstract class PragmaticaBaseEntity extends ContentEntityBase {
   public static function getBaseFieldDefinitions() {
     $fields['id'] = BaseFieldDefinition::create('integer')
       ->setLabel('ID')
-      ->setDescription("Identificador")
+      ->setDescription("Identificador interno único do elemento.")
       ->setReadOnly(TRUE)
       ->setSetting('unsigned', TRUE);
 
     $fields['guid'] = BaseFieldDefinition::create('string')
       ->setLabel(t('GUID'))
-      ->setRequired(TRUE)
+      ->setRequired(FALSE)
       ->setSetting('max_length', 36)
       ->setDescription(t('Código único global (GUID) de identificação.'))
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -1,
+      ]);
+
+    $fields['code'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Código'))
+      ->setRequired(TRUE)
+      ->setSetting('max_length', 36)
+      ->setDescription(t('Código de identificação, como siglas ou abreviaturas, geralmente usado para referência rápida.'))
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 0,
+      ])
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
