@@ -1,0 +1,29 @@
+<div class="pragmatica">
+  <div class="pragmatica-header pragmatica-justify-between">
+    <h1 class="pragmatica-title">{{ label.name.value }}</h1>
+    <span class="pragmatica-tag-circle" style="background-color: {{ label.color.value }}; color: #fff;"></span>
+  </div>
+  <div class="pragmatica-meta">
+    <p>{{ 'Adicionado em'|t }} {{ label.created.value|date('d/m/Y') }}</p>
+  </div>
+
+  <div class="pragmatica-content">
+    <p>{{ label.description.value }}</p>
+  </div>
+
+
+  <h2 class="pragmatica-subtitle">{{ 'Utilizado em'|t }}</h2>
+  <ul class="pragmatica-list">
+      {% for selection in selections %}
+        <li class="pragmatica-list-item pragmatica-justify-between pragmatica-card">
+          <p class="pragmatica-excerpt">...{{ selection.name }}... </p>
+        </li>
+      {% else %}
+        <li>{{ 'Esta etiqueta não foi utilizado em nenhuma marcação.'|t }}</li>
+      {% endfor %}
+  </ul>
+
+  <a href="{{ path('pragmatica.label_public_list') }}" class="pragmatica-back-link">
+    ← {{ 'Voltar para lista de etiquetas'|t }}
+  </a>
+</div>

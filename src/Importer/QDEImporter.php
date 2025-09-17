@@ -119,7 +119,7 @@ class QDEImporter {
    * @throws \Exception
    */
   protected function importCodes(SimpleXMLElement $codesXml) {
-    $storage = $this->entity_manager->getStorage($this->pragmatica_prefix . 'code');
+    $storage = $this->entity_manager->getStorage($this->pragmatica_prefix . 'label');
     foreach ($codesXml->Codes as $codesXml) {
       foreach ($codesXml->Code as $codeXml) {
         $this->importCode($codeXml, $storage);
@@ -135,7 +135,7 @@ class QDEImporter {
     EntityStorageInterface $storage,
     $parent_code_id = NULL
   ) {
-    $saved_code = $this->saveEntity($codeXml, $storage, ['parent_id' => $parent_code_id]);
+    $saved_code = $this->saveEntity($codeXml, $storage);
     $saved_code_id = $saved_code->id();
 
     if (isset($codeXml->Code)) {
@@ -193,80 +193,80 @@ class QDEImporter {
   /**
    * Import Selections.
    */
-  protected function importSelections(
-    SimpleXMLElement $selectionsXml,
-    $source_id
-  ) {
-    $storage = $this->entity_manager->getStorage($this->pragmatica_prefix . 'selection');
+  // protected function importSelections(
+  //   SimpleXMLElement $selectionsXml,
+  //   $source_id
+  // ) {
+  //   $storage = $this->entity_manager->getStorage($this->pragmatica_prefix . 'selection');
 
-    $selection_type_mapping = [
-      'PlainTextSelection' => 'Texto',
-      'AudioSelection' => 'Áudio',
-      'TranscriptionSelection' => 'Transcrição',
-      'VideoSelection' => 'Vídeo',
-      'PictureSelection' => 'Imagem',
-      'DocumentSelection' => 'Documento (PDF)',
-    ];
+  //   $selection_type_mapping = [
+  //     'PlainTextSelection' => 'Texto',
+  //     'AudioSelection' => 'Áudio',
+  //     'TranscriptionSelection' => 'Transcrição',
+  //     'VideoSelection' => 'Vídeo',
+  //     'PictureSelection' => 'Imagem',
+  //     'DocumentSelection' => 'Documento (PDF)',
+  //   ];
 
-    $selection_type_mapping_ids = $this->getIdFromProperty(
-      'name',
-      $selection_type_mapping,
-      $this->pragmatica_prefix . 'selection_type'
-    );
+  //   $selection_type_mapping_ids = $this->getIdFromProperty(
+  //     'name',
+  //     $selection_type_mapping,
+  //     $this->pragmatica_prefix . 'selection_type'
+  //   );
 
-    foreach ($selection_type_mapping_ids as $selection_type => $selection_type_id) {
-      if (isset($selectionsXml->$selection_type)) {
-        foreach ($selectionsXml->$selection_type as $selectionXml) {
-          $this->importSelection($selectionXml, $storage, $source_id);
-        }
-      }
-    }
+  //   foreach ($selection_type_mapping_ids as $selection_type => $selection_type_id) {
+  //     if (isset($selectionsXml->$selection_type)) {
+  //       foreach ($selectionsXml->$selection_type as $selectionXml) {
+  //         $this->importSelection($selectionXml, $storage, $source_id);
+  //       }
+  //     }
+  //   }
 
-  }
+  // }
 
-  protected function importSelection(
-    SimpleXMLElement $xml,
-    EntityStorageInterface $storage,
-    $source_id
-  ) {
+  // protected function importSelection(
+  //   SimpleXMLElement $xml,
+  //   EntityStorageInterface $storage,
+  //   $source_id
+  // ) {
 
-    $saved_selection = $this->saveEntity($xml, $storage, ['source_id' => $source_id]);
-    $selection_id = $saved_selection->id();
+  //   $saved_selection = $this->saveEntity($xml, $storage, ['source_id' => $source_id]);
+  //   $selection_id = $saved_selection->id();
 
-    foreach ($xml->Coding as $codingXml) {
-      $this->importCoding($codingXml, $selection_id);
-    }
-  }
+  //   foreach ($xml->Coding as $codingXml) {
+  //     // $this->importCoding($codingXml, $selection_id);
+  //   }
+  // }
 
   /**
    * Import Coding.
    *
    */
-  function importCoding(
-    SimpleXMLElement $xml,
-    $selection_id
-  ) {
-    $storage = $this->entity_manager->getStorage($this->pragmatica_prefix . 'coding');
+  // function importCoding(
+  //   SimpleXMLElement $xml,
+  //   $selection_id
+  // ) {
+  //   $storage = $this->entity_manager->getStorage($this->pragmatica_prefix . 'coding');
 
-    if (!$xml->CodeRef || !isset($xml->CodeRef['targetGUID'])) {
-      $this->logger->error('Coding XML element missing required "CodeRef" child element or "targetGUID" attribute.');
-      return;
-    }
+  //   if (!$xml->CodeRef || !isset($xml->CodeRef['targetGUID'])) {
+  //     $this->logger->error('Coding XML element missing required "CodeRef" child element or "targetGUID" attribute.');
+  //     return;
+  //   }
 
-    $code_guid = (string) $xml->CodeRef['targetGUID'];
-    $code_id = $this->getEntityIdByKey($this->pragmatica_prefix . 'code', $code_guid);
-    if (!$code_id) {
-      $this->logger->error('Code with GUID @guid not found.', ['@guid' => $code_guid]);
-      return;
-    }
+  //   $code_guid = (string) $xml->CodeRef['targetGUID'];
+  //   $code_id = $this->getEntityIdByKey($this->pragmatica_prefix . 'code', $code_guid);
+  //   if (!$code_id) {
+  //     $this->logger->error('Code with GUID @guid not found.', ['@guid' => $code_guid]);
+  //     return;
+  //   }
 
-    $coding_data = [
-      'selection_id' => $selection_id,
-      'code_id' => $code_id,
-    ];
+  //   $coding_data = [
+  //     'selection_id' => $selection_id,
+  //     'code_id' => $code_id,
+  //   ];
 
-    $this->saveEntity($xml, $storage, $coding_data);
-  }
+  //   $this->saveEntity($xml, $storage, $coding_data);
+  // }
 
   /**
    * Get information from source files.

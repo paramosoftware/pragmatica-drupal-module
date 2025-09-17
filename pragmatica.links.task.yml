@@ -1,11 +1,11 @@
-entity.pragmatica_code.canonical:
-  route_name: entity.pragmatica_code.canonical
-  base_route: entity.pragmatica_code.canonical
+entity.pragmatica_label.canonical:
+  route_name: entity.pragmatica_label.canonical
+  base_route: entity.pragmatica_label.canonical
   title: View
 
-entity.pragmatica_code.edit_form:
-  route_name: entity.pragmatica_code.edit_form
-  base_route: entity.pragmatica_code.canonical
+entity.pragmatica_label.edit_form:
+  route_name: entity.pragmatica_label.edit_form
+  base_route: entity.pragmatica_label.canonical
   title: Edit
 
 entity.pragmatica_source.canonical:

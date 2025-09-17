@@ -13,15 +13,7 @@ function pragmatica_install() {
       'Áudio',
       'Vídeo',
       'Imagem'
-    ],
-    'pragmatica_selection_type' => [
-      'Texto',
-      'Áudio',
-      'Transcrição',
-      'Vídeo',
-      'Imagem',
-      'Documento (PDF)',
-    ],
+    ]
   ];
 
   foreach ($types as $type => $values) {

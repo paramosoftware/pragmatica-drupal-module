@@ -14,28 +14,15 @@
     <div class="pragmatica-search-results">
       <h2 class="pragmatica-subtitle">{{ 'Resultados para '|t }} "{{ query }}"</h2>
 
-      {% if results.sources or results.codes %}
+      {% if results.labels %}
         <div class="pragmatica-results-row">
-          {% if results.sources %}
+          {% if results.labels %}
             <div class="pragmatica-column">
-              <h3>{{ 'Fontes'|t }}</h3>
+              <h3>{{ 'Etiquetas'|t }}</h3>
               <ul class="pragmatica-list">
-                {% for source in results.sources %}
+                {% for label in results.labels %}
                   <li class="pragmatica-list-item pragmatica-card">
-                    <a href="{{ source.url }}">{{ source.name }}</a>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          {% endif %}
-
-          {% if results.codes %}
-            <div class="pragmatica-column">
-              <h3>{{ 'Códigos'|t }}</h3>
-              <ul class="pragmatica-list">
-                {% for code in results.codes %}
-                  <li class="pragmatica-list-item pragmatica-card">
-                    <a href="{{ code.url }}">{{ code.name }}</a>
+                    <a href="{{ label.url }}">{{ label.name }}</a>
                   </li>
                 {% endfor %}
               </ul>

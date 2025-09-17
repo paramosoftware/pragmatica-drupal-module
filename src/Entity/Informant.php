@@ -66,7 +66,7 @@ class Informant extends PragmaticaBaseEntity {
     $header['profession_id'] = t('Profissão');
     $header['city_birth_id'] = t('Cidade natal');
     $header['city_residency_id'] = t('Cidade de residência');
-    return $this->addItemsAfterKeyInArray($header, $parent, 'id');
+    return $this->addItemsAfterKeyInArray($header, $parent, 'code');
   }
 
   public function buildListRow(PragmaticaBaseEntity $entity): array {

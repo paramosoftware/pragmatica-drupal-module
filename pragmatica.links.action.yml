@@ -1,8 +1,14 @@
-entity.pragmatica_code.add:
-  route_name: entity.pragmatica_code.add_form
-  title: 'Adicionar código'
+entity.pragmatica_label.add:
+  route_name: entity.pragmatica_label.add_form
+  title: 'Adicionar etiqueta'
   appears_on:
-    - entity.pragmatica_code.collection
+    - entity.pragmatica_label.collection
+
+entity.pragmatica_label_type.add:
+  route_name: entity.pragmatica_label_type.add_form
+  title: 'Adicionar tipo de etiqueta'
+  appears_on:
+    - entity.pragmatica_label_type.collection
 
 entity.pragmatica_source.add:
   route_name: entity.pragmatica_source.add_form
@@ -12,7 +18,7 @@ entity.pragmatica_source.add:
 
 entity.pragmatica_selection.add:
   route_name: entity.pragmatica_selection.add_form
-  title: 'Adicionar seleção'
+  title: 'Adicionar marcação'
   appears_on:
       - entity.pragmatica_selection.collection
 
@@ -21,12 +27,6 @@ entity.pragmatica_user.add:
   title: 'Adicionar usuário'
   appears_on:
     - entity.pragmatica_user.collection
-
-entity.pragmatica_coding.add:
-  route_name: entity.pragmatica_coding.add_form
-  title: 'Adicionar codificação'
-  appears_on:
-    - entity.pragmatica_coding.collection
 
 entity.pragmatica_gender.add:
   route_name: entity.pragmatica_gender.add_form

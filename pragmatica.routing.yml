@@ -31,105 +31,136 @@ pragmatica.search_public:
   requirements:
       _access: 'TRUE'
 
+
+
 ###################################################
-######## Source public routes #####################
+######## Label public routes #######################
 ###################################################
 
-pragmatica.source_public_list:
-  path: '/pragmatica/fontes'
+pragmatica.label_public_list:
+  path: '/pragmatica/etiquetas'
   defaults:
-    _controller: '\Drupal\pragmatica\Controller\SourcePublicController::list'
-    _title: 'Fontes'
+    _controller: '\Drupal\pragmatica\Controller\LabelPublicController::list'
+    _title: 'Etiquetas'
   requirements:
     _access: 'TRUE'
 
-pragmatica.source_public_item:
-  path: '/pragmatica/fonte/{pragmatica_source}'
+pragmatica.label_public_item:
+  path: '/pragmatica/etiqueta/{pragmatica_label}'
   defaults:
-    _controller: '\Drupal\pragmatica\Controller\SourcePublicController::item'
-    _title_callback: '\Drupal\pragmatica\Controller\SourcePublicController::itemTitle'
+    _controller: '\Drupal\pragmatica\Controller\LabelPublicController::item'
+    _title_callback: '\Drupal\pragmatica\Controller\LabelPublicController::itemTitle'
   requirements:
-    pragmatica_source: \d+
-    _access: 'TRUE'
-  options:
-    parameters:
-      pragmatica_source:
-        type: 'entity:pragmatica_source'
-
-###################################################
-######## Code public routes #######################
-###################################################
-
-pragmatica.code_public_list:
-  path: '/pragmatica/codigos'
-  defaults:
-    _controller: '\Drupal\pragmatica\Controller\CodePublicController::list'
-    _title: 'Códigos'
-  requirements:
+    pragmatica_label: \d+
     _access: 'TRUE'
 
-pragmatica.code_public_item:
-  path: '/pragmatica/codigo/{pragmatica_code}'
-  defaults:
-    _controller: '\Drupal\pragmatica\Controller\CodePublicController::item'
-    _title_callback: '\Drupal\pragmatica\Controller\CodePublicController::itemTitle'
-  requirements:
-    pragmatica_code: \d+
-    _access: 'TRUE'
 
 ###################################################
-############### Code routes #######################
+############# Label routes #######################
 ###################################################
 
-entity.pragmatica_code.collection:
-  path: '/admin/pragmatica/code'
+entity.pragmatica_label.collection:
+  path: '/admin/pragmatica/label'
   defaults:
-    _entity_list: 'pragmatica_code'
-    _title: 'Códigos'
+    _entity_list: 'pragmatica_label'
+    _title: 'Etiquetas'
   requirements:
     _permission: 'pragmatica'
   options:
     _admin_route: TRUE
 
-entity.pragmatica_code.canonical:
-  path: '/admin/pragmatica/code/{pragmatica_code}'
+entity.pragmatica_label.canonical:
+  path: '/admin/pragmatica/label/{pragmatica_label}'
   defaults:
-    _entity_view: 'pragmatica_code'
+    _entity_view: 'pragmatica_label'
   requirements:
     _permission: 'pragmatica'
   options:
     _admin_route: TRUE
 
-entity.pragmatica_code.add_form:
-  path: '/admin/pragmatica/code/add'
+entity.pragmatica_label.add_form:
+  path: '/admin/pragmatica/label/add'
   defaults:
-    _entity_form: 'pragmatica_code.add'
-    _title: 'Adicionar código'
+    _entity_form: 'pragmatica_label.add'
+    _title: 'Adicionar etiqueta'
   requirements:
     _permission: 'pragmatica'
   options:
       _admin_route: TRUE
 
-entity.pragmatica_code.edit_form:
-  path: '/admin/pragmatica/code/{pragmatica_code}/edit'
+entity.pragmatica_label.edit_form:
+  path: '/admin/pragmatica/label/{pragmatica_label}/edit'
   defaults:
-    _entity_form: 'pragmatica_code.edit'
-    _title: 'Editar código'
+    _entity_form: 'pragmatica_label.edit'
+    _title: 'Editar etiqueta'
   requirements:
     _permission: 'pragmatica'
   options:
     _admin_route: TRUE
 
 
-entity.pragmatica_code.delete_form:
-  path: '/admin/pragmatica/code/{pragmatica_code}/delete'
+entity.pragmatica_label.delete_form:
+  path: '/admin/pragmatica/label/{pragmatica_label}/delete'
   defaults:
-    _entity_form: 'pragmatica_code.delete'
-    _title: 'Apagar código'
+    _entity_form: 'pragmatica_label.delete'
+    _title: 'Apagar etiqueta'
   requirements:
     _permission: 'pragmatica'
   options:
     _admin_route: TRUE
+
+###################################################
+############ Label type routes ####################
+###################################################
+
+entity.pragmatica_label_type.collection:
+  path: '/admin/pragmatica/label_type'
+  defaults:
+    _entity_list: 'pragmatica_label_type'
+    _title: 'Tipos de etiquetas'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_label_type.canonical:
+  path: '/admin/pragmatica/label_type/{pragmatica_label_type}'
+  defaults:
+    _entity_view: 'pragmatica_label_type'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_label_type.add_form:
+  path: '/admin/pragmatica/label_type/add'
+  defaults:
+    _entity_form: 'pragmatica_label_type.add'
+    _title: 'Adicionar tipo de etiqueta'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_label_type.edit_form:
+  path: '/admin/pragmatica/label_type/{pragmatica_label_type}/edit'
+  defaults:
+    _entity_form: 'pragmatica_label_type.edit'
+    _title: 'Editar tipo de etiqueta'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_label_type.delete_form:
+  path: '/admin/pragmatica/label_type/{pragmatica_label_type}/delete'
+  defaults:
+    _entity_form: 'pragmatica_label_type.delete'
+    _title: 'Apagar tipo de etiqueta'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
 
 
 ###################################################
@@ -250,7 +281,7 @@ entity.pragmatica_selection.collection:
   path: '/admin/pragmatica/selection'
   defaults:
     _entity_list: 'pragmatica_selection'
-    _title: 'Seleções'
+    _title: 'Marcações'
   requirements:
     _permission: 'pragmatica'
   options:
@@ -269,7 +300,7 @@ entity.pragmatica_selection.add_form:
   path: '/admin/pragmatica/selection/add'
   defaults:
     _entity_form: 'pragmatica_selection.add'
-    _title: 'Adicionar seleção'
+    _title: 'Adicionar marcação'
   requirements:
     _permission: 'pragmatica'
   options:
@@ -279,7 +310,7 @@ entity.pragmatica_selection.edit_form:
   path: '/admin/pragmatica/selection/{pragmatica_selection}/edit'
   defaults:
     _entity_form: 'pragmatica_selection.edit'
-    _title: 'Editar seleção'
+    _title: 'Editar marcação'
   requirements:
     _permission: 'pragmatica'
   options:
@@ -289,61 +320,7 @@ entity.pragmatica_selection.delete_form:
   path: '/admin/pragmatica/selection/{pragmatica_selection}/delete'
   defaults:
     _entity_form: 'pragmatica_selection.delete'
-    _title: 'Apagar seleção'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    _admin_route: TRUE
-
-###################################################
-############ Selection types routes ###############
-###################################################
-
-entity.pragmatica_selection_type.collection:
-  path: '/admin/pragmatica/selection_type'
-  defaults:
-    _entity_list: 'pragmatica_selection_type'
-    _title: 'Tipos de seleção'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    _admin_route: TRUE
-
-entity.pragmatica_selection_type.canonical:
-  path: '/admin/pragmatica/selection_type/{pragmatica_selection_type}'
-  defaults:
-    _entity_view: 'pragmatica_selection_type'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    _admin_route: TRUE
-
-entity.pragmatica_selection_type.add_form:
-  path: '/admin/pragmatica/selection_type/add'
-  defaults:
-    _entity_form: 'pragmatica_selection_type.add'
-    _title: 'Adicionar tipo de seleção'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    _admin_route: TRUE
-
-entity.pragmatica_selection_type.edit_form:
-  path: '/admin/pragmatica/selection_type/{pragmatica_selection_type}/edit'
-  defaults:
-    _entity_form: 'pragmatica_selection_type.edit'
-    _title: 'Editar tipo de seleção'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    _admin_route: TRUE
-
-
-entity.pragmatica_selection_type.delete_form:
-  path: '/admin/pragmatica/selection_type/{pragmatica_selection_type}/delete'
-  defaults:
-    _entity_form: 'pragmatica_selection_type.delete'
-    _title: 'Apagar tipo de seleção'
+    _title: 'Apagar marcação'
   requirements:
     _permission: 'pragmatica'
   options:
@@ -397,60 +374,6 @@ entity.pragmatica_user.delete_form:
   defaults:
     _entity_form: 'pragmatica_user.delete'
     _title: 'Apagar usuário'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    admin_route: TRUE
-
-
-###################################################
-############# Coding routes #######################
-###################################################
-
-entity.pragmatica_coding.collection:
-  path: '/admin/pragmatica/coding'
-  defaults:
-    _entity_list: 'pragmatica_coding'
-    _title: 'Codificações'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    admin_route: TRUE
-
-entity.pragmatica_coding.canonical:
-  path: '/admin/pragmatica/coding/{pragmatica_coding}'
-  defaults:
-    _entity_view: 'pragmatica_coding'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    admin_route: TRUE
-
-entity.pragmatica_coding.add_form:
-  path: '/admin/pragmatica/coding/add'
-  defaults:
-    _entity_form: 'pragmatica_coding.add'
-    _title: 'Adicionar codificação'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    admin_route: TRUE
-
-entity.pragmatica_coding.edit_form:
-  path: '/admin/pragmatica/coding/{pragmatica_coding}/edit'
-  defaults:
-    _entity_form: 'pragmatica_coding.edit'
-    _title: 'Editar codificação'
-  requirements:
-    _permission: 'pragmatica'
-  options:
-    admin_route: TRUE
-
-entity.pragmatica_coding.delete_form:
-  path: '/admin/pragmatica/coding/{pragmatica_coding}/delete'
-  defaults:
-    _entity_form: 'pragmatica_coding.delete'
-    _title: 'Apagar codificação'
   requirements:
     _permission: 'pragmatica'
   options:

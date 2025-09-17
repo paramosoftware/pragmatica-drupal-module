@@ -229,14 +229,14 @@
   overflow-y: auto;
 }
 
-.pragmatica-coding-item {
+.pragmatica-selection-item {
   cursor: pointer;
   padding: 5px;
   border-radius: var(--border-radius-sm);
   transition: background-color 0.2s ease-in-out;
 }
 
-.pragmatica-coding-item:hover {
+.pragmatica-selection-item:hover {
   background-color: var(--color-bg-muted);
 }
 
