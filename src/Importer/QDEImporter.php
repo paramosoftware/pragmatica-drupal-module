@@ -242,11 +242,54 @@ class QDEImporter {
       }
 
       $informant_header = $contribution['informant_header'] ?? [];
-      $answers = $contribution['answers'] ?? [];
+      $responses = $contribution['responses'] ?? [];
       $informant_id = $this->saveInformant($informant_number, $informant_header, $prefix);
-      # @TODO: save answers and link selections to it (instead of linking to source)
+      # @TODO: save responses and link selections to it (instead of linking to source)
+      $saved_responses = $this->saveResponses($responses, $informant_id, $source_id);
     }
   }
+
+
+  protected function saveResponses(array $responses, ?int $informant_id, int $source_id): array {
+    $saved_response_ids = [];
+    if (empty($responses)) {
+      return $saved_response_ids;
+    }
+
+    foreach ($responses as $question_number => $response_text) {
+      $situation_id = $this->upsertEntityByUniqueProperty(
+        $this->pragmatica_prefix . 'situation',
+        $this->code_key,
+        [$this->code_key => (string)$question_number]
+      );
+
+      $response_data = [
+        'informant_id' => $informant_id,
+        'source_id' => $source_id,
+        'situation_id' => $situation_id,
+        'name' => $response_text,
+      ];
+
+      try {
+        $this->saveXMLEntity(
+          new SimpleXMLElement('<Response/>'),
+          $this->entity_manager->getStorage($this->pragmatica_prefix . 'response'),
+          $response_data,
+          array_keys($response_data)
+        );
+      } catch (Exception $e) {
+        $this->logger->error('Failed to save response for question @question_number: @message', [
+          '@question_number' => $question_number,
+          '@message' => $e->getMessage(),
+        ]);
+      }
+
+      $saved_response_ids[$question_number] = $response_id ?? null;
+    }
+
+    return $saved_response_ids;
+  }
+
 
   /**
    * Parse the source name to extract prefix and informant number range.
@@ -412,7 +455,7 @@ class QDEImporter {
       }
   
       $header = [];
-      $answers = [];
+      $responses = [];
       $informant_number = null;
       $parsing_header = false;
   
@@ -446,30 +489,30 @@ class QDEImporter {
         elseif (preg_match('/^(\d+)(.*)$/', $line, $matches)) {
           $parsing_header = false;
           $question_number = (int)$matches[1];
-          $answer_text = trim($matches[2]);
+          $response_text = trim($matches[2]);
 
-          if (isset($answers[$question_number])) {
+          if (isset($responses[$question_number])) {
             $contributions[] = [
-              'error' => "Duplicate answer for question number $question_number in contribution",
+              'error' => "Duplicate response for question number $question_number in contribution",
             ];
             continue 2;
           }
 
-          $answers[$question_number] = $answer_text;
+          $responses[$question_number] = $response_text;
 
           while (isset($lines[$i + 1]) && !preg_match('/^(\d+)(.*)$/', trim($lines[$i + 1]))) {
             $i++;
-            $answers[$question_number] .= ' ' . trim($lines[$i]);
+            $responses[$question_number] .= ' ' . trim($lines[$i]);
           }
 
-          $answers[$question_number] = trim($answers[$question_number]);
+          $responses[$question_number] = trim($responses[$question_number]);
           continue;
         }
       }
 
-      if (empty($answers)) {
+      if (empty($responses)) {
         $contributions[] = [
-          'error' => "No answers found in contribution",
+          'error' => "No responses found in contribution",
         ];
         continue;
       }
@@ -484,7 +527,7 @@ class QDEImporter {
       $contributions[] = [
         'informant_number' => $informant_number,
         'informant_header' => $header,
-        'answers' => $answers,
+        'responses' => $responses,
       ];
     }
 
@@ -573,14 +616,16 @@ class QDEImporter {
 
 
 
-  function addEntityKeyToMapping(string $entity_type, string $key, $id) {
+  function addEntityKeyToMapping(string $entity_type, $key, $id) {
+    $key = is_array($key) ? implode('|', $key) : $key;
     if (!isset($this->entities_unique_property_id_mapping[$entity_type])) {
       $this->entities_unique_property_id_mapping[$entity_type] = [];
     }
     $this->entities_unique_property_id_mapping[$entity_type][$key] = $id;
   }
 
-  function getEntityIdByKey(string $entity_type, string $key) {
+  function getEntityIdByKey(string $entity_type, $key) {
+    $key = is_array($key) ? implode('|', $key) : $key;
     return $this->entities_unique_property_id_mapping[$entity_type][$key] ?? NULL;
   }
 
@@ -671,7 +716,7 @@ class QDEImporter {
     SimpleXMLElement $xml_element,
     EntityStorageInterface $storage,
     array $extra_fields = [],
-    string $entity_unique_property = null
+    $entity_composite_properties = []
   ) {
 
     $datetime_fields = ['created', 'changed'];
@@ -680,24 +725,36 @@ class QDEImporter {
     $entity_type = $this->getEntityTypeFromStorage($storage);
     $fields_to_xml_mapping = $entity_type->getFieldsToXmlMapping();
 
-    $entity_unique_property = $entity_unique_property ?? $this->guid_key;
+    $entity_composite_properties = empty($entity_composite_properties) ? $this->guid_key : $entity_composite_properties;
+    $entity_unique_properties = is_array($entity_composite_properties) ? $entity_composite_properties : [$entity_composite_properties];
 
-    $entity_unique_property_value = (string) $xml_element[$fields_to_xml_mapping[$entity_unique_property]] ?? 
-                      (string) $xml_element[$entity_unique_property] ?? 
-                      $extra_fields[$entity_unique_property] ?? 
-                      null; 
-    
+    $unique_properties = [];
 
-    if (empty($entity_unique_property_value)) {
-      throw new Exception("Unique property '$entity_unique_property' value is missing in entity data.");
+    foreach ($entity_unique_properties as $unique_property) {
+
+        $entity_unique_property_value = $this->getValueFromXmlElement($xml_element, $unique_property);
+
+        if (empty($entity_unique_property_value) && isset($extra_fields[$unique_property])) {
+            $entity_unique_property_value = $extra_fields[$unique_property];
+        }
+
+        if (!empty($entity_unique_property_value)) {
+            $unique_properties[$unique_property] = $entity_unique_property_value;
+        }
     }
 
-    $existing = $storage->loadByProperties([$entity_unique_property => $entity_unique_property_value]);
+    if (empty($unique_properties)) {
+      throw new Exception('At least one unique property must be provided and present in the XML element or extra fields.');
+    }
+
+    $existing = $storage->loadByProperties($unique_properties);
     $entity = $existing ? reset($existing) : $storage->create();
-    $entity->set($entity_unique_property, $entity_unique_property_value);
+    foreach ($unique_properties as $field => $value) {
+      $entity->set($field, $value);
+    }
 
     foreach ($fields_to_xml_mapping as $field => $xml_key) {
-      if ($field === $entity_unique_property) {
+      if (isset($unique_properties[$field])) {
         continue;
       }
 
@@ -714,12 +771,8 @@ class QDEImporter {
       $value = null;
 
       foreach ($xml_keys as $key) {
-        if (isset($xml_element[$key])) {
-          $value = (string) $xml_element[$key];
-          break;
-        }
-        elseif (isset($xml_element->$key)) {
-          $value = (string) $xml_element->$key;
+        $value = $this->getValueFromXmlElement($xml_element, $key);
+        if (!empty($value)) {
           break;
         }
       }
@@ -780,10 +833,21 @@ class QDEImporter {
       throw new Exception('Failed to save entity: ' . $entity->label());
     }
     else {
-      $this->addEntityKeyToMapping($storage->getEntityTypeId(), $entity_unique_property_value, $entity->id());
+      $this->addEntityKeyToMapping($storage->getEntityTypeId(), array_values($unique_properties), $entity->id());
     }
 
     return $entity;
+  }
+
+
+  private function getValueFromXmlElement(SimpleXMLElement $xml_element, string $key) {
+    if (isset($xml_element[$key])) {
+      return (string) $xml_element[$key];
+    }
+    elseif (isset($xml_element->$key)) {
+      return (string) $xml_element->$key;
+    }
+    return null;
   }
 
 
