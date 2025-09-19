@@ -23,6 +23,7 @@ class QDEImporter {
   protected $guid_key = 'guid';
   protected $code_key = 'code';
   protected $name_key = 'name';
+  protected $original_codes_mapping = [];
 
 
   public function __construct(
@@ -118,17 +119,19 @@ class QDEImporter {
   }
 
   /**
+   * Import a Code and its children recursively.
    * @throws \Exception
+   * @todo: A code should be separated into multiple corresponding labels: AP1+AS5 => AP1 and AS5? 
    */
   protected function importCode(
     SimpleXMLElement $codeXml,
     EntityStorageInterface $storage,
     $parent_code_id = NULL
   ) {
-
     $codeXml->addAttribute($this->code_key, (string)$codeXml[$this->name_key]);
     $saved_code = $this->saveXMLEntity($codeXml, $storage, [], $this->code_key);
     $saved_code_id = $saved_code->id();
+    $this->original_codes_mapping[(string)$codeXml[$this->guid_key]] = $saved_code_id;
 
     if (isset($codeXml->Code)) {
       foreach ($codeXml->Code as $childCodeXml) {
@@ -204,13 +207,16 @@ class QDEImporter {
     array $info_from_source_files
   ) {
 
-    if (empty($info_from_source_files['plain_text'])) {
+    $source_plain_text = $info_from_source_files['plain_text'] ?? null;
+
+    if (empty($source_plain_text)) {
       $this->logger->warning('No plain text content available for source ID @id. Skipping selections import.', ['@id' => $source_id]);
       return;
     }
 
-    $source_parsed = $this->parseSourcePlainText($info_from_source_files['plain_text']);
+    $source_parsed = $this->parseSourcePlainText($source_plain_text);
     $source_name = (string) $sourceXml[$this->name_key] ?? null;
+    
     if (empty($source_name)) {
       $this->logger->warning('Source name is empty for source ID @id.', ['@id' => $source_id]);
     }
@@ -244,10 +250,155 @@ class QDEImporter {
       $informant_header = $contribution['informant_header'] ?? [];
       $responses = $contribution['responses'] ?? [];
       $informant_id = $this->saveInformant($informant_number, $informant_header, $prefix);
-      # @TODO: save responses and link selections to it (instead of linking to source)
       $saved_responses = $this->saveResponses($responses, $informant_id, $source_id);
+      $selections = $this->saveSelections($sourceXml, $source_plain_text, $source_id, $saved_responses);
     }
   }
+
+
+
+  /**
+   * Save selections from the source XML, linking codings to labels and responses.
+   *
+   * @param  SimpleXMLElement  $selectionsXml
+   * @param  string  $source_plain_text
+   * @param  int  $source_id
+   * @param  array  $saved_responses
+   *
+   * @return array IDs of saved selections.
+   */
+  protected function saveSelections(
+    SimpleXMLElement $selectionsXml, 
+    string $source_plain_text, 
+    int $source_id, 
+    array $saved_responses
+  ) {
+
+    $storage = $this->entity_manager->getStorage($this->pragmatica_prefix . 'selection');
+    $selections_saved = [];
+
+    $selection_type = 'PlainTextSelection';
+
+    if (!isset($selectionsXml->$selection_type)) {
+      return $selections_saved;
+    }
+
+    $full_xml_selections = [];
+
+    foreach ($selectionsXml->$selection_type as $selectionXml) {
+      if (!isset($selectionXml->Coding)) {
+        continue;
+      }
+
+      $selection_end = (int) $selectionXml['endPosition'] ?? null;
+      $selection_start = (int) $selectionXml['startPosition'] ?? null;
+
+      if ($selection_start === null || $selection_end === null) {
+        $this->logger->error('Selection XML element missing required startPosition or endPosition attributes.');
+        continue;
+      }
+
+      if ($selection_start === 0 && $selection_end >= strlen($source_plain_text)) {
+        $this->logger->info('Selection spans entire source text for source ID @id. Skipping selection.', ['@id' => $source_id]);
+        continue;
+      }
+
+      foreach ($selectionXml->Coding as $codingXml) {
+        if (!$codingXml->CodeRef || !isset($codingXml->CodeRef['targetGUID'])) {
+          $this->logger->error('Coding XML element missing required "CodeRef" child element or "targetGUID" attribute.');
+          continue;
+        }
+
+        $full_xml_selections[] = [
+          'code_guid' => (string) $codingXml->CodeRef['targetGUID'],
+          'selection_start' => $selection_start,
+          'selection_end' => $selection_end,
+        ];
+      }
+    }
+
+    foreach ($full_xml_selections as $xml_selection) {
+      $code_guid = $xml_selection['code_guid'];
+      $selection_start = $xml_selection['selection_start'];
+      $selection_end = $xml_selection['selection_end'];
+
+      $label_id = $this->original_codes_mapping[$code_guid] ?? null;
+      if (!$label_id) {
+        $this->logger->error('Label with GUID @guid not found. Skipping selection.', ['@guid' => $code_guid]);
+        continue;
+      }
+
+      $matched_response_id = null;
+      $matched_response_start = null;
+      $matched_response_situation_number = null;
+
+      foreach ($saved_responses as $response_info) {
+        if ($response_info['start_position'] <= $selection_start && $response_info['end_position'] >= $selection_end) {
+          $matched_response_id = $response_info['response_id'] ?? null;
+          $matched_response_start = $response_info['start_position'] ?? null;
+          $matched_response_situation_number = $response_info['situation_number'] ?? null;
+          break;
+        }
+      }
+
+      if (!$matched_response_id) {
+        $this->logger->warning('No matching response found for selection "@selection" starting at position @start and ending at @end. Skipping selection.', [
+          '@selection' => substr($source_plain_text, $selection_start, $selection_end - $selection_start),
+          '@start' => $selection_start,
+          '@end' => $selection_end,
+        ]);
+        continue;
+      }
+
+      // @todo: the selection is not being cut correctly, probably because extra/missing characters...
+      /* @todo: verify error, maybe related:
+        Failed to save selection for source ID 15: SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect string value: '\xC3' for column 
+        `drupal_fflch`.`pragmatica_selection`.`name` at row 1: 
+        INSERT INTO {pragmatica_selection} ("name", "response_id", "label_id", "start_position", "end_position", "created", "changed") 
+        VALUES (:db_insert_placeholder_0, :db_insert_placeholder_1, :db_insert_placeholder_2, :db_insert_placeholder_3, :db_insert_placeholder_4, 
+        :db_insert_placeholder_5, :db_insert_placeholder_6); 
+        Array ( [:db_insert_placeholder_0] => e ofere� [:db_insert_placeholder_1] => 716 
+        [:db_insert_placeholder_2] => 183 [:db_insert_placeholder_3] => 238 [:db_insert_placeholder_4] => 246 
+        [:db_insert_placeholder_5] => 1758309383 [:db_insert_placeholder_6] => 1758309383 )
+       */
+      $selection_text = substr($source_plain_text, $selection_start, $selection_end - $selection_start);
+
+      $response_selection_start = $selection_start - $matched_response_start;
+      $response_selection_end = $selection_end - $matched_response_start;
+
+      if (str_starts_with($selection_text, (string)$matched_response_situation_number)) {
+        $selection_text = substr($selection_text, strlen((string)$matched_response_situation_number));
+        $response_selection_start += strlen((string)$matched_response_situation_number);
+      }
+
+      $selection_entity_data = [
+        'name' => trim($selection_text),
+        'response_id' => $matched_response_id,
+        'label_id' => $label_id,
+        'start_position' => $response_selection_start,
+        'end_position' => $response_selection_end
+      ];
+
+      try {
+        $saved_selection = $this->saveXMLEntity(
+            new SimpleXMLElement('<Selection/>'),
+            $storage,
+            $selection_entity_data,
+            ['name', 'response_id', 'label_id']
+          );
+          $selections_saved[] = $saved_selection->id();
+      } catch (Exception $e) {
+        $this->logger->error('Failed to save selection for source ID @source: @message', [
+          '@source' => $source_id,
+          '@message' => $e->getMessage(),
+        ]);
+      }
+
+    }
+
+    return $selections_saved;
+  }
+
 
 
   protected function saveResponses(array $responses, ?int $informant_id, int $source_id): array {
@@ -256,7 +407,7 @@ class QDEImporter {
       return $saved_response_ids;
     }
 
-    foreach ($responses as $question_number => $response_text) {
+    foreach ($responses as $question_number => $response_info) {
       $situation_id = $this->upsertEntityByUniqueProperty(
         $this->pragmatica_prefix . 'situation',
         $this->code_key,
@@ -267,16 +418,16 @@ class QDEImporter {
         'informant_id' => $informant_id,
         'source_id' => $source_id,
         'situation_id' => $situation_id,
-        'name' => $response_text,
+        'name' => $response_info['full_response'] ?? '',
       ];
 
       try {
-        $this->saveXMLEntity(
-          new SimpleXMLElement('<Response/>'),
-          $this->entity_manager->getStorage($this->pragmatica_prefix . 'response'),
-          $response_data,
-          array_keys($response_data)
-        );
+        $saved_response = $this->saveXMLEntity(
+            new SimpleXMLElement('<Response/>'),
+            $this->entity_manager->getStorage($this->pragmatica_prefix . 'response'),
+            $response_data,
+            array_keys($response_data)
+          );
       } catch (Exception $e) {
         $this->logger->error('Failed to save response for question @question_number: @message', [
           '@question_number' => $question_number,
@@ -284,7 +435,8 @@ class QDEImporter {
         ]);
       }
 
-      $saved_response_ids[$question_number] = $response_id ?? null;
+      $response_info['response_id'] = $saved_response->id();
+      $saved_response_ids[$question_number] = $response_info;
     }
 
     return $saved_response_ids;
@@ -460,6 +612,7 @@ class QDEImporter {
       $parsing_header = false;
   
       foreach ($lines as $i => $line) {
+        $raw_line = $line;
         $line = trim($line);
 
         if ($i === 0 && preg_match('/^#(\d+)$/', $line, $matches)) {
@@ -488,24 +641,32 @@ class QDEImporter {
         }
         elseif (preg_match('/^(\d+)(.*)$/', $line, $matches)) {
           $parsing_header = false;
-          $question_number = (int)$matches[1];
+          $situation_number = (int)$matches[1];
           $response_text = trim($matches[2]);
+          $start_position = strpos($plain_text, $raw_line);
 
-          if (isset($responses[$question_number])) {
+          if (isset($responses[$situation_number])) {
             $contributions[] = [
-              'error' => "Duplicate response for question number $question_number in contribution",
+              'error' => "Duplicate response for question number $situation_number in contribution",
             ];
             continue 2;
           }
 
-          $responses[$question_number] = $response_text;
+          $end_position = $start_position + strlen($raw_line) - 1;
 
           while (isset($lines[$i + 1]) && !preg_match('/^(\d+)(.*)$/', trim($lines[$i + 1]))) {
             $i++;
-            $responses[$question_number] .= ' ' . trim($lines[$i]);
+            $new_line = $lines[$i];
+            $end_position += strlen($new_line) + 1;
+            $response_text .= ' ' . trim($new_line);
           }
 
-          $responses[$question_number] = trim($responses[$question_number]);
+          $responses[$situation_number] = [
+            'full_response' => trim($response_text),
+            'start_position' => $start_position,
+            'end_position' => $end_position,
+            'situation_number' => $situation_number,
+          ];
           continue;
         }
       }
