@@ -821,7 +821,7 @@ pragmatica.situation_item:
   path: '/pragmatica/situation/{pragmatica_situation}'
   defaults:
     _controller: '\Drupal\pragmatica\Controller\SituationPublicController::item'
-    _title: 'Etiquetas'
+    _title: 'Situation'
   requirements:
     _access: 'TRUE'
 

@@ -60,7 +60,8 @@ class InformantPublicController extends ControllerBase {
     foreach ($responses as $response) {
       $processed_responses[] = [
         'name' => $response->label(),
-        'situation' =>  $response->get('situation_id')->entity->label()
+        'situation_name' =>  $response->get('situation_id')->entity->label(),
+        'situation_id' =>  $response->get('situation_id')->entity->id()
         ];
 
 
