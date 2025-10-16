@@ -164,6 +164,17 @@ entity.pragmatica_label_type.delete_form:
 
 
 ###################################################
+############ Label type public routes ####################
+###################################################
+pragmatica.public_label_type_item:
+  path: '/pragmatica/label_type/{pragmatica_label_type}'
+  defaults:
+    _controller: '\Drupal\pragmatica\Controller\LabelTypePublicController::item'
+    _title: 'Situation'
+  requirements:
+    _access: 'TRUE'
+
+###################################################
 ############### Source routes #####################
 ###################################################
 

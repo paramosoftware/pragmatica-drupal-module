@@ -29,6 +29,13 @@ function pragmatica_theme($existing, $type, $theme, $path) {
       'variables' => [
         'label' => NULL,
         'selections' => [],
+        'label_type' => NULL,
+      ],
+    ],
+    'pragmatica_label_type_item' => [
+      'variables' => [
+        'label_type' => NULL,
+
       ],
     ],
     'pragmatica_situation_list' => [
