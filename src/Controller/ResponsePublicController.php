@@ -53,7 +53,10 @@ class ResponsePublicController extends ControllerBase
     $processed_labels = [];
 
     foreach ($selections as $selection) {
-      $processed_labels[] = $selection->get('label_id')->entity->label();
+      $processed_labels[] = [
+        'name' => $selection->get('label_id')->entity->label(),
+        'id' => $selection->get('label_id')->entity->id()
+      ];
 
     }
 
