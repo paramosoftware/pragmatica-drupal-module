@@ -61,14 +61,17 @@ class InformantPublicController extends ControllerBase {
       $processed_responses[] = [
         'name' => $response->label(),
         'id' => $response->id(),
-        'situation_name' =>  $response->get('situation_id')->entity->label(),
+        'created' =>  $response->get('created')->value,
+        'situation_name' =>  $response->get('situation_id')->entity->get('name')->value,
+        'situation_code' =>  $response->get('situation_id')->entity->get('code')->value,
         'situation_id' =>  $response->get('situation_id')->entity->id()
         ];
 
 
     }
 
-
+//    var_dump($processed_responses);
+//    exit;
     $build['#theme'] = 'pragmatica_informant_item';
     $build['#informant'] = $processed_informant;
     $build['#responses'] = $processed_responses;

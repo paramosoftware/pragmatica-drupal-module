@@ -8,23 +8,60 @@
   </div>
 
   <div class="pragmatica-content">
-    <p><strong>{{ 'Código' }}:</strong> {{ informant.code }}</p>
-    <p><strong>{{ 'Idade' }}:</strong> {{ informant.age }}</p>
-    <p><strong>{{ 'Gênero' }}:</strong> {{ informant.gender }}</p>
-    <p><strong>{{ 'Línguagem' }}:</strong> {{ informant.language }}</p>
-    <p><strong>{{ 'Escolaridade' }}:</strong> {{ informant.education }}</p>
-    <p><strong>{{ 'Profissão' }}:</strong> {{ informant.profession }}</p>
-    <p><strong>{{ 'Cidade natal' }}:</strong> {{ informant.city_birth }}</p>
-    <p><strong>{{ 'Cidade de residência' }}:</strong> {{ informant.city_residency }}</p>
+    {% if informant.code  %}
+      <p><strong>{{ 'Código' }}:</strong> {{ informant.code }}</p>
+    {% endif %}
+    {% if informant.age  %}
+      <p><strong>{{ 'Idade' }}:</strong> {{ informant.age }}</p>
+    {% endif %}
+    {% if informant.gender  %}
+      <p><strong>{{ 'Gênero' }}:</strong> {{ informant.gender }}</p>
+    {% endif %}
+    {% if informant.language  %}
+      <p><strong>{{ 'Línguagem' }}:</strong> {{ informant.language }}</p>
+    {% endif %}
+    {% if informant.education  %}
+      <p><strong>{{ 'Escolaridade' }}:</strong> {{ informant.education }}</p>
+    {% endif %}
+    {% if informant.profession  %}
+      <strong>{{ 'Profissão' }}:</strong> {{ informant.profession }}
+    {% endif %}
+    {% if informant.city_birth  %}
+      <p><strong>{{ 'Cidade natal' }}:</strong> {{ informant.city_birth }}</p>
+    {% endif %}
+    {% if informant.city_residency  %}
+      <p><strong>{{ 'Cidade de residência' }}:</strong> {{ informant.city_residency }}</p>
+    {% endif %}
+
   </div>
 
   <h2 class="pragmatica-subtitle">{{ 'Respostas do informante'|t }}</h2>
+
   <ul class="pragmatica-list">
     {% for response in responses %}
-      <li class="pragmatica-list-item pragmatica-justify-between pragmatica-card">
-          <a href="{{ path('pragmatica.public_response_item', {'pragmatica_response': response.id}) }}" class="pragmatica-excerpt">{{ response.name }}</a>
 
-          <a href="{{ path('pragmatica.public_situation_item', {'pragmatica_situation': response.situation_id}) }}" class="pragmatica-excerpt">{{ response.situation_name }}</a>
+      <li class="pragmatica-list-item pragmatica-justify-between pragmatica-card">
+        <div class="pragmatica-list-item-content">
+{#          <a href="{{ path('pragmatica.public_situation_item', {'pragmatica_situation': response.situation_id}) }}" class="">{{ response.situation_name }}</a>#}
+          <div class="pragmatica-header-code">
+            <p>{{ response.situation_code }}</p>
+          </div>
+
+          <div class="pragmatica-list-item-body">
+            <div class="pragmatica-header-title">
+              <p>{{ response.situation_name }} <a href="{{ path('pragmatica.public_situation_item', {'pragmatica_situation': response.situation_id}) }}" class="test-href">>></a></p>
+            </div>
+            <div class="pragmatica-response-container">
+{#              <a href="{{ path('pragmatica.public_response_item', {'pragmatica_response': response.id}) }}" class="">#}
+{#                {{ response.name }}#}
+{#              </a>#}
+              <p class="pragmatica-response">
+                {{ response.name }} <a href="{{ path('pragmatica.public_response_item', {'pragmatica_response': response.id}) }}" class="test-href">>></a>
+              </p>
+            </div>
+          </div>
+        </div>
+
       </li>
     {% else %}
       <li>{{ 'Este informante não respondeu nenhuma situação.'|t }}</li>
