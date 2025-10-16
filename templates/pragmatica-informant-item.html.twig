@@ -22,9 +22,9 @@
   <ul class="pragmatica-list">
     {% for response in responses %}
       <li class="pragmatica-list-item pragmatica-justify-between pragmatica-card">
-          <a href="{{ path('pragmatica.response_item', {'pragmatica_response': response.id}) }}" class="pragmatica-excerpt">{{ response.name }}</a>
+          <a href="{{ path('pragmatica.public_response_item', {'pragmatica_response': response.id}) }}" class="pragmatica-excerpt">{{ response.name }}</a>
 
-          <a href="{{ path('pragmatica.situation_item', {'pragmatica_situation': response.situation_id}) }}" class="pragmatica-excerpt">{{ response.situation_name }}</a>
+          <a href="{{ path('pragmatica.public_situation_item', {'pragmatica_situation': response.situation_id}) }}" class="pragmatica-excerpt">{{ response.situation_name }}</a>
       </li>
     {% else %}
       <li>{{ 'Este informante não respondeu nenhuma situação.'|t }}</li>

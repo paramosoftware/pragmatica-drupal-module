@@ -817,7 +817,7 @@ entity.pragmatica_situation.delete_form:
 ############## Situation public routes ################
 ###################################################
 
-pragmatica.situation_item:
+pragmatica.public_situation_item:
   path: '/pragmatica/situation/{pragmatica_situation}'
   defaults:
     _controller: '\Drupal\pragmatica\Controller\SituationPublicController::item'
@@ -884,7 +884,7 @@ entity.pragmatica_informant.delete_form:
 ############## Informant public routes ################
 ###################################################
 
-pragmatica.informant_item:
+pragmatica.public_informant_item:
   path: '/pragmatica/informant/{pragmatica_informant}'
   defaults:
     _controller: '\Drupal\pragmatica\Controller\InformantPublicController::item'
@@ -951,7 +951,7 @@ entity.pragmatica_response.delete_form:
     ###################################################
 
 
-pragmatica.response_item:
+pragmatica.public_response_item:
   path: '/pragmatica/response/{pragmatica_response}'
   defaults:
     _controller: '\Drupal\pragmatica\Controller\ResponsePublicController::item'
