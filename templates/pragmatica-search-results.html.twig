@@ -1,28 +1,36 @@
+
 <div class="pragmatica">
-  <div class="pragmatica-header">
-    <h1 class="pragmatica-title">{{ 'Pesquisa'|t }}</h1>
-  </div>
+  <h2 class="pragmatica-title">{{ 'Filtros'|t }}</h2>
 
-  <div class="pragmatica-search-form">
-    <form action="{{ path('pragmatica.search_public') }}" method="get">
-      <input type="text" name="q" value="{{ query }}" placeholder="{{ 'Termo de busca'|t }}" required>
-      <button type="submit">{{ 'Pesquisar'|t }}</button>
-    </form>
-  </div>
+  <form method="POST">
 
-  {% if query %}
+    <div class="container p-0 m-0">
+      <div class="row">
+        {% for field in filters %}
+          <div class="col-12 col-md-6 col-lg-4">
+            {{ _self.renderField(field) }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  
+    <button type="submit" class="btn btn-primary">{{ 'Buscar'|t }}</button>
+  </form>
+
+
+  {% if true %}
     <div class="pragmatica-search-results">
-      <h2 class="pragmatica-subtitle">{{ 'Resultados para '|t }} "{{ query }}"</h2>
+      <h2 class="pragmatica-subtitle">{{ 'Resultados'|t }}</h2>
 
-      {% if results.labels %}
+      {% if results.responses %}
         <div class="pragmatica-results-row">
-          {% if results.labels %}
+          {% if results.responses %}
             <div class="pragmatica-column">
-              <h3>{{ 'Etiquetas'|t }}</h3>
+              <h3>{{ 'Respostas'|t }}</h3>
               <ul class="pragmatica-list">
-                {% for label in results.labels %}
+                {% for response in results.responses %}
                   <li class="pragmatica-list-item pragmatica-card">
-                    <a href="{{ label.url }}">{{ label.name }}</a>
+                    <a href="{{ response.url }}">{{ response.name }}</a>
                   </li>
                 {% endfor %}
               </ul>
@@ -35,3 +43,32 @@
     </div>
   {% endif %}
 </div>
+
+
+
+{# macros.twig #}
+
+{% macro renderField(field) %}
+<div class="mb-3">
+    <label for="{{ field.name }}" class="form-label">{{ field.label }}</label>
+    <br>
+
+    {% if field.type == 'select' %}
+      {% set selected = field.value ?? [] %}
+      <select name="{{ field.name }}" id="{{ field.name }}" {{ field.multiple ? 'multiple' : '' }} class="form-control">
+        {% for value, label in field.options %}
+          <option value="{{ value }}" {% if value in selected %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+
+    {% elseif field.type == 'number' %}
+      <input type="number" name="{{ field.name }}" id="{{ field.name }}" value="{{ field.value }}" min="{{ field.min }}" max="{{ field.max }}" class="form-control" />
+    
+    {% elseif field.type == 'text' %}
+      <input type="text" name="{{ field.name }}" id="{{ field.name }}" value="{{ field.value }}" />
+
+    {% else %}
+      <p class="error">Unsupported field type: {{ field.type }}</p>
+    {% endif %}
+</div>
+{% endmacro %}

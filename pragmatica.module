@@ -66,6 +66,7 @@ function pragmatica_theme($existing, $type, $theme, $path) {
       'variables' => [
         'query' => NULL,
         'results' => [],
+        'filters' => [],
       ],
     ]
   ];

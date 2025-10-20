@@ -2,11 +2,13 @@
 
 namespace Drupal\pragmatica\Controller;
 
+use Drupal;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\pragmatica\Form\PragmaticaPublicSearchForm;
 
 class PragmaticaPublicController extends ControllerBase {
 
@@ -25,6 +27,9 @@ class PragmaticaPublicController extends ControllerBase {
     );
   }
 
+
+
+
   /**
    * @param  \Symfony\Component\HttpFoundation\Request  $request
    *
@@ -35,44 +40,42 @@ class PragmaticaPublicController extends ControllerBase {
    * @todo: Include selections as results.
    */
   public function search(Request $request) {
-    $query_term = $request->query->get('q');
+    $query_params = $request->request->all();
     $results = [];
 
-    $label_storage = $this->entityTypeManager()->getStorage('pragmatica_label');
-    $label_query = $label_storage->getQuery();
+    $form = new PragmaticaPublicSearchForm();
+    $form->setFormValues($query_params);
+    $response_storage = $this->entityTypeManager->getStorage('pragmatica_response');
+    $query = $response_storage->getQuery();
+    $query = $form->buildSearchQuery($query);
+   
+    $response_ids = $query->execute();
 
-    if (!empty($query_term)) {
-      $query_term = trim($query_term);
-
-      $label_or_condition = $label_query->orConditionGroup()
-        ->condition('name', $query_term, 'CONTAINS')
-        ->condition('description', $query_term, 'CONTAINS');
-
-      $label_query->condition($label_or_condition);
-
-      $label_ids = $label_query->execute();
-      $label_results = $label_storage->loadMultiple($label_ids);
-
-      if (!empty($label_results)) {
-        $results['labels'] = [];
-        foreach ($label_results as $label) {
-          $results['labels'][] = [
-            'name' => $label->label(),
-            'url' => Url::fromRoute('pragmatica.label_public_item', ['pragmatica_label' => $label->id()])->toString(),
-          ];
-        }
+    if (!empty($response_ids)) {
+      $responses = $response_storage->loadMultiple($response_ids);
+      $results['responses'] = [];
+      foreach ($responses as $response) {
+        $results['responses'][] = [
+          'name' => $response->label(),
+          'url' => Url::fromRoute('pragmatica.public_response_item', ['pragmatica_response' => $response->id()])->toString(),
+        ];
       }
     }
 
-    return [
+    $render_elements = [];
+
+    $render_elements[] = [
       '#theme' => 'pragmatica_search_results',
-      '#query' => $query_term,
+      '#query' => '',
       '#results' => $results,
+      '#filters' => $form->getFieldConfig(),
       '#attached' => [
         'library' => [
-          'pragmatica/pragmatica_styles',
+          'pragmatica/pragmatica'
         ],
       ],
     ];
+
+    return $render_elements;
   }
 }
