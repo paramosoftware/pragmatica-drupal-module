@@ -161,15 +161,37 @@ class Response extends PragmaticaBaseEntity {
 
 }
 
-public function buildDataForDisplay() {
-    return [
-      'label' => $this->label(),
-      'url' => Url::fromRoute('pragmatica.public_response_item', ['pragmatica_response' => $this->id()])->toString(),
-      'informant' => $this->getForeignEntityDataForDisplay('informant_id', $this, 'Informante: '),
-      'situation' => $this->getForeignEntityDataForDisplay('situation_id', $this, 'Situação: '),
-      'tags' => $this->getLabels()
+public function buildDataForDisplay()
+{
+  $processedData = [
+    'label' => $this->label(),
+    'url' => Url::fromRoute('pragmatica.public_response_item', ['pragmatica_response' => $this->id()])->toString(),
+    'informant' => $this->getForeignEntityDataForDisplay('informant_id', $this, 'Informante: '),
+    'situation' => $this->getForeignEntityDataForDisplay('situation_id', $this, 'Situação: '),
+    'tags' => $this->getLabels()
+  ];
+
+  // ########## todo: remove this snippet  ##########
+  $response_storage = Drupal::service('entity_type.manager')->getStorage('pragmatica_response');
+  $query = $response_storage->getQuery();
+  $query->condition('informant_id', $this->get('informant_id')->entity->get('id')->value);
+  $response_ids = $query->execute();
+  $responses = $response_storage->loadMultiple($response_ids);
+  $processed_responses = [];
+
+  foreach ($responses as $response) {
+    $processed_responses[] = [
+      'name' => $response->label(),
+      'situation_name' => $response->get('situation_id')->entity->get('name')->value,
+      'situation_code' => $response->get('situation_id')->entity->get('code')->value,
+      'situation_id' => $response->get('situation_id')->entity->id(),
+      'id' => $response->id(),
     ];
 
+  }
+    $processedData['informant']['responses'] = $processed_responses;
+    $processedData['situation']['label'] = $this->get('situation_id')->entity->get('name')->value;
+    //  ####################
+  return $processedData;
 }
-
 }

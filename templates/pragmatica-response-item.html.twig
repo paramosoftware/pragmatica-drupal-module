@@ -1,5 +1,4 @@
 {% import '@pragmatica/pragmatica-macros.html.twig' as macros %}
-
 <script>
   class ResponseBuilder {
     constructor(response, selections, containerId) {
@@ -77,12 +76,45 @@
     <span class="pragmatica-tag-circle" style="background-color: {{ label.color.value }}; color: #fff;"></span>
   </div>
 
-  {% if response %}
-      {#  content, content_url, header_left, header_right, tags#}
-      {{ macros.annotation_card(response.label, response.url, response.situation, response.informant, response.tags) }}
-  {% else %}
-    <p>{{ 'Nenhum resultado encontrado.'|t }}</p>
-  {% endif %}
+  <div class="container px-0">
+    <div class="d-flex flex-column gap-3">
+
+        <p class="mb-0 pb-0 text-muted fs-5">
+          {{ response.situation.label }}
+        </p>
+        <h1 class="fs-1">
+          {{ response.label }}
+        </h1>
+        <div id="response-labels" class="d-flex align-items-center">
+          <p class="fs-6 mb-0 me-2">Seleções:</p>
+          {% for tag in response.tags %}
+            <span class="badge badge-square me-1" style="font-size: 14px; background-color: {{ tag.color }};" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ tag.tooltip }}">
+            <a href="{{ tag.url }}" class="hover-link text-white">
+              {{ tag.label }}
+            </a>
+          </span>
+          {% endfor %}
+        </div>
+      <hr class="my-0 py-0">
+        <div class="mt-0 pt-0">
+          <p class="mb-0 pb-0">
+            Outras respostas deste informante ({{ response.informant.label }}):
+          </p>
+          <div class="d-flex flex-column gap-3">
+            {% for response in response.informant.responses %}
+              <div class="d-flex">
+
+                <p class="mb-0">{{ response.name }}</p>
+                <a href="{{ path('pragmatica.public_response_item', {'pragmatica_response': response.id}) }}" class="test-href">>></a>
+
+              </div>
+            {% endfor %}
+          </div>
+       </div>
+      </div>
+
+  </div>
+
 
 </div>
 
