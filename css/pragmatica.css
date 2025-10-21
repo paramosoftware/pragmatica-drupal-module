@@ -45,3 +45,24 @@
   --panel-height: 90vh;
 }
 
+
+.badge-square {
+  border-radius: 0 !important;
+  font-weight: 500;
+  padding: 0.4em 0.6em;
+}
+.card-text {
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+.tooltip-inner {
+  max-width: 400px !important;
+  text-align: left;
+}
+.hover-link {
+  text-decoration: none;
+}
+.hover-link:hover {
+  text-decoration: underline;
+  color: #000 !important;
+}
