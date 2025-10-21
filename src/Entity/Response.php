@@ -149,7 +149,7 @@ class Response extends PragmaticaBaseEntity {
         'tooltip' => $selection_label_entity->get('name')->value,
 
         'code' => $selection_label_entity->get('code')->value,
-        'color' => $selection_label_entity->get('color')->value,
+        'color' => $selection_label_entity->get('color')->value ?? '#36454F',
 
         'start_position' => $selection->get('start_position')->value,
         'end_position' => $selection->get('end_position')->value,
