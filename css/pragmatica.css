@@ -45,6 +45,9 @@
   --panel-height: 90vh;
 }
 
+#main {
+  padding-top: 0 !important;
+}
 
 .badge-square {
   border-radius: 0 !important;
