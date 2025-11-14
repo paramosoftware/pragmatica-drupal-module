@@ -139,14 +139,7 @@ para permitir configurações locais de desenvolvimento (mostrar erros, desabili
       'images' => array_filter(\Drupal::configFactory()->getEditable('copyprevention.settings')->get('copyprevention_images') ?? []),
     ```
 
-10. O módulo `conditional_fields` (`web/modules/contrib/conditional_fields`) precisa ser manualmente alterado, para evitar um warning de acesso de array offset numa variável null.  
-No arquivo `conditional_fields/src/DependencyHelper.php`, na função `resolveBundleDependencies`, adicionar como a primeira linha:  
-
-      ```php
-         $this->dependencies[$this->entity_type][$this->bundle] = [];
-      ```
-
-11. Verifique se a leitura do .htaccess está habilitada pelo web server (apache), caso contrário:<br>
+10. Verifique se a leitura do .htaccess está habilitada pelo web server (apache), caso contrário:
     Em `/etc/apache2/sites-available` adicione (dentro de VirtualHost)
     ```
     AccessFileName .htaccess
@@ -159,6 +152,6 @@ No arquivo `conditional_fields/src/DependencyHelper.php`, na função `resolveBu
     </Directory>
     ```
 
-12. A instalação pode ser acessada usando o endereço [http://localhost/fflch-drupal/web](http://localhost/fflch-drupal/web) (ou o caminho usado).
+11. A instalação pode ser acessada usando o endereço [http://localhost/fflch-drupal/web](http://localhost/fflch-drupal/web) (ou o caminho usado).
 
-13. Faça login com o usuário `fflch` e a senha `admin` em [http://localhost/fflch-drupal/web/user/login](http://localhost/fflch-drupal/web/user/login).
+12. Faça login com o usuário `fflch` e a senha `admin` em [http://localhost/fflch-drupal/web/user/login](http://localhost/fflch-drupal/web/user/login).
