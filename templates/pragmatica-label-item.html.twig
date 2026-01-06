@@ -14,12 +14,20 @@
 {% endif %}
 
 
-<h2>{{ 'Utilizado em'|t }}</h2>
+<h2>{{ pager.total }} {{ pager.total == 1 ? 'resposta associada'|t : 'respostas associadas'|t }}</h2>
+
+{# Simple GET form for pagination actions on the label page (submitted by the pager macro) #}
+<form id="pragmatica-label-pagination-form" method="GET"></form>
+
 <div class="d-flex flex-column gap-3 mt-3">
   {% if responses %}
+    {{ macros.pager(pager, 'pragmatica-label-pagination-form', 'pragmatica-label-page-select') }}
+
     {% for response in responses %}
       {{ macros.response_card(response.label, response.url, response.situation, response.informant, response.labels) }}
     {% endfor %}
+
+    {{ macros.pager(pager, 'pragmatica-label-pagination-form', 'pragmatica-label-page-select') }}
   {% else %}
     <p>{{ 'Nenhum resposta associada.'|t }}</p>
   {% endif %}

@@ -21,15 +21,16 @@
   {{ pager.total }} {{ pager.total == 1 ? 'resultado encontrado'|t : 'resultados encontrados'|t }}
   </h2>
   {% if results.responses %}
+
+    {{ macros.pager(pager, 'pragmatica-search-form', 'pragmatica-page-select') }}
+  
     {% for response in results.responses %}
       {{ macros.response_card(response.label, response.url, response.situation, response.informant, response.labels) }}
     {% endfor %}
+
+    {{ macros.pager(pager, 'pragmatica-search-form', 'pragmatica-page-select') }}
   {% else %}
     <p>{{ 'Nenhum resultado encontrado.'|t }}</p>
-  {% endif %}
-
-  {% if pager.total_pages > 1 %}
-    {{ macros.renderPager(pager, 'pragmatica-search-form', 'pragmatica-page-select') }}
   {% endif %}
 </div>
 

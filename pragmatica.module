@@ -32,6 +32,7 @@ function pragmatica_theme($existing, $type, $theme, $path) {
         'label' => NULL,
         'responses' => [],
         'label_type' => NULL,
+        'pager' => [],
       ],
     ],
     'pragmatica_situation_list' => [
@@ -43,6 +44,7 @@ function pragmatica_theme($existing, $type, $theme, $path) {
       'variables' => [
         'situation' => NULL,
         'responses' => [],
+        'pager' => [],
       ],
     ],
     'pragmatica_response_item' => [

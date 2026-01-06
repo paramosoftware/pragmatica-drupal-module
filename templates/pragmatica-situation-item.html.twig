@@ -17,12 +17,19 @@
 
 
 <div class="d-flex flex-column gap-3 mt-3">
-  <h2>{{ 'Respostas'|t }}</h2>
+  <h2>{{ pager.total }} {{ pager.total == 1 ? 'resposta associada'|t : 'respostas associadas'|t }}</h2>
+
+  {# Simple GET form for pagination on situation page #}
+  <form id="pragmatica-situation-pagination-form" method="GET"></form>
 
   {% if responses %}
+    {{ macros.pager(pager, 'pragmatica-situation-pagination-form', 'pragmatica-situation-page-select') }}
+
     {% for response in responses %}
       {{ macros.response_card(response.label, response.url, '', response.informant, response.labels) }}
     {% endfor %}
+
+    {{ macros.pager(pager, 'pragmatica-situation-pagination-form', 'pragmatica-situation-page-select') }}
   {% else %}
     <p>{{ 'Nenhum resultado encontrado.'|t }}</p>
   {% endif %}

@@ -14,6 +14,8 @@ class SituationPublicController extends ControllerBase {
 
   protected $entityTypeManager;
 
+  use PagerTrait;
+
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
   }
@@ -35,18 +37,36 @@ class SituationPublicController extends ControllerBase {
     $query = $response_storage->getQuery();
     $query->condition('situation_id', $pragmatica_situation->id());
 
-    $response_ids = $query->execute();
-    $responses = $response_storage->loadMultiple($response_ids);
-    $processed_responses = [];
+    // Pagination for situation responses.
+    $per_page = 24;
+    $page = (int) \Drupal::request()->query->get('page', 0);
 
-    foreach ($responses as $response) {
-      /** @var \Drupal\pragmatica\Entity\Response $response */
-      $processed_responses[] = $response->getEntityForDisplay();
+    $count_query = clone $query;
+    $total = (int) $count_query->count()->execute();
+
+    $pager = $this->buildPager($total, $per_page, $page, 5);
+    $page = $pager['current'];
+
+    $processed_responses = [];
+    if ($total > 0) {
+      $offset = $page * $per_page;
+      $query->range($offset, $per_page);
+      $response_ids = $query->execute();
+      $responses = $response_storage->loadMultiple($response_ids);
+
+      foreach ($responses as $response) {
+        /** @var \Drupal\pragmatica\Entity\Response $response */
+        $processed_responses[] = $response->getEntityForDisplay();
+      }
+    }
+    else {
+      $pager = $this->buildPager(0, $per_page, 0, 5);
     }
 
     $build['#theme'] = 'pragmatica_situation_item';
     $build['#situation'] = $pragmatica_situation->getEntityForDisplay();
     $build['#responses'] = $processed_responses;
+    $build['#pager'] = $pager;
     $build['#attached'] = [
       'library' => [
         'pragmatica/pragmatica',
