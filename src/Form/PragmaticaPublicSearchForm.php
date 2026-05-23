@@ -99,8 +99,7 @@ class PragmaticaPublicSearchForm extends FormBase {
     $config['education_id'] = $this->addField('education_id', 'Escolaridade', $this->getEntityOptions('education'), true, 'informant');
     $config['gender_id'] = $this->addField('gender_id', 'Gênero', $this->getEntityOptions('gender'), true, 'informant');
     $config['profession_id'] = $this->addField('profession_id', 'Profissão', $this->getEntityOptions('profession'), true, 'informant');
-    $config['min_age'] = $this->addNumberField('min_age', 'Idade mínima', 'informant', 'age', 0, 100, ['operator' => '>=']);
-    $config['max_age'] = $this->addNumberField('max_age', 'Idade máxima', 'informant', 'age', 0, 100, ['operator' => '<=']);
+    $config['age_interval_id'] = $this->addField('age_interval_id', 'Faixa etária', $this->getEntityOptions('age_interval'), true, 'informant');
 
     if (!empty($this->form_values)) {
       $config = $this->setValuesFromSubmittedForm($config, $this->form_values);
@@ -126,21 +125,6 @@ class PragmaticaPublicSearchForm extends FormBase {
     $label_filter_applied = false;
 
     $config = $this->setFieldsConfiguration();
-
-    $max_age = $config['max_age'];
-    $min_age = $config['min_age'];
-
-    if (!empty($max_age['value']) && !empty($min_age['value'])) {
-      $this->applyGenericCondition($query, [
-        'name' => 'age',
-        'type' => 'number',
-        'operator' => 'BETWEEN',
-        'value' => [$min_age['value'], $max_age['value']],
-        'parent' => 'informant'
-      ]);
-      unset($config['max_age']);
-      unset($config['min_age']);
-    }
 
     foreach ($config as $field_key => $field) {
       if (isset($field['parent']) && $field['parent'] === 'label') {
@@ -269,6 +253,45 @@ class PragmaticaPublicSearchForm extends FormBase {
   }
 
 
+
+  public function getGroupedFieldConfig(): array {
+    $config = $this->getFieldConfig();
+    $groups = [
+      'situacao' => ['label' => 'Situação', 'fields' => []],
+      'etiquetas' => ['label' => 'Etiquetas', 'fields' => []],
+      'informante' => ['label' => 'Informante', 'fields' => []],
+    ];
+    foreach ($config as $key => $field) {
+      $parent = $field['parent'] ?? '';
+      if ($parent === 'label') {
+        $groups['etiquetas']['fields'][$key] = $field;
+      }
+      elseif ($parent === 'informant') {
+        $groups['informante']['fields'][$key] = $field;
+      }
+      else {
+        $groups['situacao']['fields'][$key] = $field;
+      }
+    }
+    return $groups;
+  }
+
+  public function getActiveFiltersDisplay(): array {
+    $active = [];
+    foreach ($this->getFieldConfig() as $field) {
+      $value = $field['value'] ?? null;
+      if (empty($value)) continue;
+      $selected = is_array($value) ? $value : [$value];
+      $selected = array_filter($selected, fn($v) => $v !== '' && $v !== null);
+      if (empty($selected)) continue;
+      $options = $field['options'] ?? [];
+      $labels = array_filter(array_map(fn($v) => $options[$v] ?? null, $selected));
+      if (!empty($labels)) {
+        $active[] = ['label' => $field['label'], 'values' => array_values($labels)];
+      }
+    }
+    return $active;
+  }
 
   public function getPrefixedEntityTypeId(string $entity_type_id) {
     return str_starts_with($entity_type_id, 'pragmatica_') ? $entity_type_id : 'pragmatica_' . $entity_type_id;

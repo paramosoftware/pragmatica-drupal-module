@@ -78,6 +78,8 @@ class PragmaticaPublicController extends ControllerBase {
       '#query' => '',
       '#results' => $results,
       '#filters' => $form->getFieldConfig(),
+      '#filter_groups' => $form->getGroupedFieldConfig(),
+      '#active_filters' => $form->getActiveFiltersDisplay(),
       '#pager' => $pager,
       '#attached' => [
         'library' => [

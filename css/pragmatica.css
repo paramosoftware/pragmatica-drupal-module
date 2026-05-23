@@ -112,6 +112,124 @@
   border-bottom: 1px solid #212529;
 }
 
+/* ── Filter toggle bar ────────────────────────────────────────────────────── */
+
+.pragmatica-filter-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--color-border-light);
+  border-radius: 0;
+  padding: 0.25rem 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+  text-align: left;
+}
+
+.pragmatica-filter-toggle:hover {
+  color: var(--color-primary);
+}
+
+.pragmatica-filter-toggle-label {
+  display: flex;
+  align-items: center;
+}
+
+.pragmatica-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 1.2em;
+  height: 1.2em;
+  padding: 0 0.3em;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+}
+
+.pragmatica-filter-chevron {
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.pragmatica-filter-toggle[aria-expanded="true"] .pragmatica-filter-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Filter groups ────────────────────────────────────────────────────────── */
+
+.pragmatica-filter-group {
+  border-left: 3px solid var(--color-primary);
+  border-top: 1px solid var(--color-border-light);
+  border-right: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+  margin-bottom: 0.5rem;
+}
+
+.pragmatica-filter-group .accordion-collapse {
+  background: var(--color-bg-muted);
+}
+
+.pragmatica-filter-group-header {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: #e8edf5;
+  box-shadow: none;
+}
+
+.pragmatica-filter-group-header::after {
+  width: 0.8rem;
+  height: 0.8rem;
+  background-size: 0.8rem;
+}
+
+.pragmatica-filter-group-header:not(.collapsed) {
+  color: var(--color-primary);
+  background: #e8edf5;
+  box-shadow: none;
+}
+
+/* ── Active filter chips ──────────────────────────────────────────────────── */
+
+.pragmatica-active-filters {
+  font-size: 0.85rem;
+}
+
+.pragmatica-active-filter-group {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.pragmatica-active-filter-label {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.pragmatica-active-filter-chip {
+  background-color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
 /* ── Label badge – pin button ─────────────────────────────────────────────── */
 
 .pragmatica-label-badge {
