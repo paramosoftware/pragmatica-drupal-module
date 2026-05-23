@@ -8,11 +8,21 @@ pragmatica.dashboard:
   options:
     _admin_route: TRUE
 
-pragmatica.import:
-  path: '/admin/pragmatica/import'
+pragmatica.import.seed:
+  path: '/admin/pragmatica/import/seed'
   defaults:
-    _title: 'Importar dados'
-    _controller: '\Drupal\pragmatica\Controller\ImportController::importForm'
+    _title: 'Importar listas controladas (CSV)'
+    _controller: '\Drupal\pragmatica\Controller\ImportController::importSeedForm'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    _admin_route: TRUE
+
+pragmatica.import.research:
+  path: '/admin/pragmatica/import/research'
+  defaults:
+    _title: 'Importar dados de pesquisa (CSV)'
+    _controller: '\Drupal\pragmatica\Controller\ImportController::importResearchForm'
   requirements:
     _permission: 'pragmatica'
   options:
@@ -958,6 +968,61 @@ entity.pragmatica_response.delete_form:
   defaults:
     _entity_form: 'pragmatica_response.delete'
     _title: 'Apagar resposta'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+
+
+####################################################
+############### age interval routes #######################
+###################################################
+
+entity.pragmatica_age_interval.collection:
+  path: '/admin/pragmatica/age_interval'
+  defaults:
+    _entity_list: 'pragmatica_age_interval'
+    _title: 'Intervalos de idade'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_age_interval.canonical:
+  path: '/admin/pragmatica/age_interval/{pragmatica_age_interval}'
+  defaults:
+    _entity_view: 'pragmatica_age_interval'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_age_interval.add_form:
+  path: '/admin/pragmatica/age_interval/add'
+  defaults:
+    _entity_form: 'pragmatica_age_interval.add'
+    _title: 'Adicionar intervalo de idade'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_age_interval.edit_form:
+  path: '/admin/pragmatica/age_interval/{pragmatica_age_interval}/edit'
+  defaults:
+    _entity_form: 'pragmatica_age_interval.edit'
+    _title: 'Editar intervalo de idade'
+  requirements:
+    _permission: 'pragmatica'
+  options:
+    admin_route: TRUE
+
+entity.pragmatica_age_interval.delete_form:
+  path: '/admin/pragmatica/age_interval/{pragmatica_age_interval}/delete'
+  defaults:
+    _entity_form: 'pragmatica_age_interval.delete'
+    _title: 'Apagar intervalo de idade'
   requirements:
     _permission: 'pragmatica'
   options:

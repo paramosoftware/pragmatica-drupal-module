@@ -88,9 +88,9 @@ class Label extends PragmaticaBaseEntity {
 
     $fields['type_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Tipo'))
-      ->setRequired(TRUE)
+      ->setRequired(FALSE)
       ->setSetting('target_type', 'pragmatica_label_type')
-      ->setDefaultValue(1)
+      ->setDefaultValue(NULL)
       ->setDisplayOptions('form', [
         'type' => 'options_select',
         'weight' => 1,

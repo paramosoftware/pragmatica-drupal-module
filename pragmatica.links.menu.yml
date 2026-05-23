@@ -24,14 +24,6 @@ pragmatica.admin:
   parent: system.admin
   weight: 15
 
-pragmatica.import:
-  title: 'Importar dados'
-  description: 'Importar dados para o módulo Pragmática.'
-  route_name: pragmatica.import
-  parent: pragmatica.admin
-  menu_name: admin
-  weight: 10
-
 
 #########################################  ENTIDADES PRINCIPAIS  ##########################################
 ###########################################################################################################
@@ -72,6 +64,35 @@ pragmatica.response:
   weight: 0
 
 
+#########################################   IMPORTAÇÃO DE DADOS   ##########################################
+###########################################################################################################
+
+pragmatica.import:
+  title: 'Importação de dados'
+  description: 'Importar dados a partir de arquivos CSV.'
+  route_name: <none>
+  parent: pragmatica.admin
+  menu_name: admin
+  weight: 18
+
+
+pragmatica.import.seed:
+  title: 'Importar vocabulários controlados (CSV)'
+  description: 'Importar vocabulários controlados a partir de CSV.'
+  route_name: pragmatica.import.seed
+  parent: pragmatica.import
+  menu_name: admin
+  weight: 11
+
+pragmatica.import.research:
+  title: 'Importar dados de pesquisa (CSV)'
+  description: 'Importar dados de pesquisa a partir de CSV.'
+  route_name: pragmatica.import.research
+  parent: pragmatica.import
+  menu_name: admin
+  weight: 12
+
+
 #########################################   CONFIGURAÇÕES   ###############################################
 ###########################################################################################################
 
@@ -104,11 +125,11 @@ pragmatica.source_type:
   menu_name: admin
   weight: 0
 
-########################################   CADASTROS AUXILIARES   #########################################
+####################################   VOCABULÁRIOS CONTROLADOS   #########################################
 ###########################################################################################################
 
 pragmatica.auxiliary:
-  title: 'Cadastros auxiliares'
+  title: 'Vocabulários controlados'
   route_name: <none>
   parent: pragmatica.admin
   menu_name: admin
@@ -163,9 +184,17 @@ pragmatica.config.education:
   menu_name: admin
   weight: 0
 
+pragmatica.config.age_interval:
+  title: 'Intervalos de idade'
+  route_name: entity.pragmatica_age_interval.collection
+  parent: pragmatica.auxiliary
+  menu_name: admin
+  weight: 0
+
 pragmatica.label_type:
   title: 'Tipos de etiqueta'
   route_name: entity.pragmatica_label_type.collection
   parent: pragmatica.auxiliary
   menu_name: admin
   weight: 0
+

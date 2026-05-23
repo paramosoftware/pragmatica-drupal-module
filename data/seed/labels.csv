@@ -1,0 +1,42 @@
+code,name,type_name
+ap1,Ato principal direto,Ato principal
+ap2,Ato principal convencionalmente indireto,Ato principal
+ap3,Ato principal não convencionalmente indireto,Ato principal
+ap0,Ato principal inexistente,Ato principal
+ap*,Ato principal (qualquer tipo),Ato principal
+pp1,1a pessoa do singular,Perspectiva
+pp2,2a pessoa do singular ou plural,Perspectiva
+pp3,1a pessoa do plural (nós),Perspectiva
+pp4,impessoal,Perspectiva
+mms1,Deslocamento verbal,Modificadores morfossintáticos
+mms2,Modal ou construção equivalente,Modificadores morfossintáticos
+mms3,Encaixe,Modificadores morfossintáticos
+mms4,Negação ou fórmula dubitativa,Modificadores morfossintáticos
+mms5,Diminutivo,Modificadores morfossintáticos
+mms1as,Deslocamento verbal (como ato de suporte),Modificadores morfossintáticos
+mms2as,Modal ou construção equivalente (como ato de suporte),Modificadores morfossintáticos
+mms3as,Encaixe (como ato de suporte),Modificadores morfossintáticos
+ml1,Minimizadores e indeterminadores lexicais,Modificadores lexicais
+ml2,Duvidadores lexicais,Modificadores lexicais
+ml3,Reforçadores lexicais,Modificadores lexicais
+ml4,Escolhas lexicais atenuantes,Modificadores lexicais
+ml1as,Minimizadores e indeterminadores lexicais (como ato de suporte),Modificadores lexicais
+ml3as,Reforçadores lexicais (como ato de suporte),Modificadores lexicais
+ml4as,Escolhas lexicais atenuantes (como ato de suporte),Modificadores lexicais
+md1,Marcadores de vínculo ou empatia,Modificadores discursivos
+md2,Marcadores de cortesia,Modificadores discursivos
+md3,Reformuladores,Modificadores discursivos
+md4,Marcadores aduladores,Modificadores discursivos
+md1as,Marcadores de vínculo ou empatia (como ato de suporte),Modificadores discursivos
+md2as,Marcadores de cortesia (como ato de suporte),Modificadores discursivos
+md2as1,Marcadores de cortesia variante 1 (como ato de suporte),Modificadores discursivos
+as1,Apelo,Atos de Suporte
+as2,Exclamação,Atos de Suporte
+as3,Minimizador de custo,Atos de Suporte
+as4,Preparador,Atos de Suporte
+as5,Justificativa,Atos de Suporte
+as6,Proposta de ressarcimento ou garantia,Atos de Suporte
+as7,Propostas de alternativas,Atos de Suporte
+as8,Aduladores,Atos de Suporte
+as9,Agradecimentos,Atos de Suporte
+as10,Reconhecimento do custo do pedidos,Atos de Suporte

@@ -41,7 +41,7 @@ class Informant extends PragmaticaBaseEntity {
     return [
       'id',
       'code',
-      'age',
+      'age_interval_id',
       'gender_id',
       'language_id',
       'education_id',
@@ -55,9 +55,10 @@ class Informant extends PragmaticaBaseEntity {
 
   public static function getFieldsToXmlMapping(): array {
     $mapping = [
-      'age' => [
+      'age_interval_id' => [
+        'entity_type' => 'pragmatica_age_interval',
         'xml' => [
-          'idade', 
+          'idade',
           'età'
         ],
       ],
@@ -110,7 +111,7 @@ class Informant extends PragmaticaBaseEntity {
 
   public function getListHeaders(): array {
     $parent = parent::getListHeaders();
-    $header['age'] = t('Idade');
+    $header['age_interval_id'] = t('Idade');
     $header['gender_id'] = t('Gênero');
     $header['language_id'] = t('Língua materna');
     $header['education_id'] = t('Escolaridade');
@@ -123,7 +124,7 @@ class Informant extends PragmaticaBaseEntity {
   public function buildListRow(PragmaticaBaseEntity $entity): array {
     /** @var self $entity */
     $row = parent::buildListRow($entity);
-    $row['age'] = $entity->get('age')->value;
+    $row['age_interval_id'] = $entity->get('age_interval_id')->entity ? $entity->get('age_interval_id')->entity->label() : '';
     $row['gender_id'] = $entity->get('gender_id')->entity ? $entity->get('gender_id')->entity->label() : '';
     $row['language_id'] = $entity->get('language_id')->entity ? $entity->get('language_id')->entity->label() : '';
     $row['education_id'] = $entity->get('education_id')->entity ? $entity->get('education_id')->entity->label() : '';
@@ -134,16 +135,17 @@ class Informant extends PragmaticaBaseEntity {
   }
 
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
-    $fields['age'] = BaseFieldDefinition::create('integer')
+    $fields['age_interval_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Idade'))
-      ->setSetting('min', 0)
+      ->setSetting('target_type', 'pragmatica_age_interval')
+      ->setRequired(FALSE)
       ->setDisplayOptions('form', [
-        'type' => 'number',
+        'type' => 'entity_reference_autocomplete',
         'weight' => 5,
       ])
       ->setDisplayOptions('view', [
         'label' => 'above',
-        'type' => 'number',
+        'type' => 'entity_reference_label',
         'weight' => 5,
       ]);
 

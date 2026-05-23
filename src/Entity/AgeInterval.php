@@ -5,13 +5,13 @@ namespace Drupal\pragmatica\Entity;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
- * Defines the Gender content entity.
+ * Defines the AgeInterval content entity.
  *
  * @ContentEntityType(
- *   id = "pragmatica_gender",
- *   label = @Translation("Gênero"),
- *   label_plural = @Translation("Gêneros"),
- *   base_table = "pragmatica_gender",
+ *   id = "pragmatica_age_interval",
+ *   label = @Translation("Intervalo de idade"),
+ *   label_plural = @Translation("Intervalos de idade"),
+ *   base_table = "pragmatica_age_interval",
  *   admin_permission = "pragmatica",
  *   entity_keys = {
  *     "id" = "id",
@@ -26,15 +26,15 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     }
  *   },
  *   links = {
- *     "canonical" = "/admin/pragmatica/gender/{pragmatica_gender}",
- *     "add-form" = "/admin/pragmatica/gender/add",
- *     "edit-form" = "/admin/pragmatica/gender/{pragmatica_gender}/edit",
- *     "delete-form" = "/admin/pragmatica/gender/{pragmatica_gender}/delete",
- *     "collection" = "/admin/pragmatica/gender"
+ *     "canonical" = "/admin/pragmatica/age_interval/{pragmatica_age_interval}",
+ *     "add-form" = "/admin/pragmatica/age_interval/add",
+ *     "edit-form" = "/admin/pragmatica/age_interval/{pragmatica_age_interval}/edit",
+ *     "delete-form" = "/admin/pragmatica/age_interval/{pragmatica_age_interval}/delete",
+ *     "collection" = "/admin/pragmatica/age_interval"
  *   }
  * )
  */
-class Gender extends PragmaticaBaseEntity {
+class AgeInterval extends PragmaticaBaseEntity {
 
   public static function getFieldsIds(): array {
     return ['id', 'code', 'name', 'created', 'changed'];
