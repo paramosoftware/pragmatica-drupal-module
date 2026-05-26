@@ -26,7 +26,7 @@
 <div class="d-flex flex-column gap-3 mt-3">
   {% if responses %}
     {% for response in responses %}
-      {{ macros.response_card(response.label, response.url, null, response.situation, response.labels) }}
+      {{ macros.response_card(response.label, response.url, response.situation, null, response.labels) }}
     {% endfor %}
   {% else %}
     <p>{{ 'Informante não respondeu a nenhuma situação'|t }}</p>
