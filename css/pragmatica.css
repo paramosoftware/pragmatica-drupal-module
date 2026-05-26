@@ -800,7 +800,6 @@
 .prag-informant-attr-label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-text-muted);
   flex-shrink: 0;
@@ -808,7 +807,7 @@
 
 .prag-informant-attr-value {
   font-size: var(--font-size-sm);
-  color: var(--color-text);
+  color: var(--color-text-muted);
 }
 
 /* Back link */
