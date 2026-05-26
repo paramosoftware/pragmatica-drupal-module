@@ -554,18 +554,38 @@ class CSVImporter {
     $id = $this->getEntityIdByField('pragmatica_label', 'code', $clean_code);
     if ($id) return $id;
     try {
-      $storage = $this->entityTypeManager->getStorage('pragmatica_label');
-      $entity = $storage->create([
+      $label_info = [
         'code' => $clean_code,
         'name' => $clean_code,
         'color' => $this->generateLabelColor($clean_code),
-      ]);
+      ];
+
+      $label_type_id = $this->getLabelTypeIdForCode($clean_code);
+      if ($label_type_id) {
+        $label_info['type_id'] = $label_type_id;
+      }
+
+      $storage = $this->entityTypeManager->getStorage('pragmatica_label');
+      $entity = $storage->create($label_info);
       $entity->save();
       return (int) $entity->id();
     }
     catch (\Exception $e) {
       return NULL;
     }
+  }
+
+
+  /**
+   * Determine label type ID based on code prefix.
+   */
+  protected function getLabelTypeIdForCode(string $code): ?int {
+    $code = ltrim($code, '+');
+    preg_match('/^([a-z]+)/i', strtolower($code), $matches);
+    $prefix = $matches[1] ?? '';
+
+    return $this->getEntityIdByField('pragmatica_label_type', 'code', $prefix)
+          ?? $this->getEntityIdByField('pragmatica_label_type', 'name', $prefix);
   }
 
   /**
