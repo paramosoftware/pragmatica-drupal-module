@@ -8,14 +8,14 @@
     </svg>
   </div>
   <div class="prag-page-header-body">
-    <p class="prag-page-header-eyebrow">{{ 'Situação'|t }} {{ situation.label }}</p>
+    <p class="prag-page-header-eyebrow">{{ 'Situação'|t }} "{{ situation.label }}"</p>
     <h1 class="prag-page-header-title">{{ situation.name }}</h1>
   </div>
 </div>
 
 
 <div class="prag-results-header">
-  <span class="prag-results-header-label">{{ pager.total }} {{ pager.total == 1 ? 'resposta da situação'|t : 'respostas da situação'|t }} {{ situation.label }}</span>
+  <span class="prag-results-header-label">{{ pager.total }} {{ pager.total == 1 ? 'resposta para a situação'|t : 'respostas para a situação'|t }} "{{ situation.label }}"</span>
   <span class="prag-results-header-rule"></span>
   {% if pager.total_pages > 1 %}
     <div class="prag-results-header-pager">{{ macros.pager(pager, 'pragmatica-situation-pagination-form', 'pragmatica-situation-page-select-top') }}</div>
@@ -39,7 +39,3 @@
 {% else %}
   <p class="text-muted">{{ 'Nenhum resultado encontrado.'|t }}</p>
 {% endif %}
-
-<a href="{{ path('pragmatica.public.label.list') }}" class="pragmatica-back-link">
-  ← {{ 'Voltar para lista de etiquetas'|t }}
-</a>
