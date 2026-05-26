@@ -93,38 +93,6 @@ pragmatica.import.research:
   weight: 12
 
 
-#########################################   CONFIGURAÇÕES   ###############################################
-###########################################################################################################
-
-pragmatica.config:
-  title: 'Configurações'
-  description: 'Configurações'
-  route_name: <none>
-  parent: pragmatica.admin
-  menu_name: admin
-  weight: 20
-
-pragmatica.user:
-  title: 'Usuários'
-  route_name: entity.pragmatica_user.collection
-  parent: pragmatica.config
-  menu_name: admin
-  weight: 0
-
-pragmatica.source:
-  title: 'Fontes'
-  route_name: entity.pragmatica_source.collection
-  parent: pragmatica.config
-  menu_name: admin
-  weight: 0
-
-pragmatica.source_type:
-  title: 'Tipos de fontes'
-  route_name: entity.pragmatica_source_type.collection
-  parent: pragmatica.config
-  menu_name: admin
-  weight: 0
-
 ####################################   VOCABULÁRIOS CONTROLADOS   #########################################
 ###########################################################################################################
 

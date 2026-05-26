@@ -45,7 +45,6 @@ class Response extends PragmaticaBaseEntity {
       'name',
       'situation_id',
       'informant_id',
-      'source_id',
       'created',
       'changed',
     ];
@@ -104,20 +103,6 @@ class Response extends PragmaticaBaseEntity {
       ->setLabel(t('Informante'))
       ->setSetting('target_type', 'pragmatica_informant')
       ->setRequired(TRUE)
-      ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 6,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'entity_reference_label',
-        'weight' => 6,
-      ]);
-
-    $fields['source_id'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Fonte'))
-      ->setSetting('target_type', 'pragmatica_source')
-      ->setRequired(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'entity_reference_autocomplete',
         'weight' => 6,

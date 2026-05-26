@@ -19,11 +19,7 @@ class ImportController extends ControllerBase {
       $container->get('form_builder')
     );
   }
-
-  public function importForm() {
-    return $this->formBuilder->getForm('Drupal\pragmatica\Importer\ImportForm');
-  }
-
+  
   public function importSeedForm() {
     return $this->formBuilder->getForm('Drupal\pragmatica\Importer\CSVSeedImportForm');
   }
