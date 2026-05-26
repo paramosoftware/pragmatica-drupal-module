@@ -14,29 +14,29 @@ pp4,impessoal,Perspectiva
 +pp1,1a pessoa do singular (menor grau de imposição),Perspectiva
 +pp2,2a pessoa do singular ou plural (menor grau de imposição),Perspectiva
 +pp4,impessoal (menor grau de imposição),Perspectiva
-mms1,Deslocamento verbal,Modificadores morfossintáticos
-mms2,Modal ou construção equivalente,Modificadores morfossintáticos
-mms3,Encaixe,Modificadores morfossintáticos
-mms4,Negação ou fórmula dubitativa,Modificadores morfossintáticos
-mms5,Diminutivo,Modificadores morfossintáticos
-mms1as,Deslocamento verbal (no ato de suporte),Modificadores morfossintáticos
-mms2as,Modal ou construção equivalente (no ato de suporte),Modificadores morfossintáticos
-mms3as,Encaixe (no ato de suporte),Modificadores morfossintáticos
-mms4as,Negação ou fórmula dubitativa (no ato de suporte),Modificadores morfossintáticos
-ml1,Minimizadores e indeterminadores lexicais,Modificadores lexicais
-ml2,Duvidadores lexicais,Modificadores lexicais
-ml3,Reforçadores lexicais,Modificadores lexicais
-ml4,Escolhas lexicais atenuantes,Modificadores lexicais
-ml1as,Minimizadores e indeterminadores lexicais (no ato de suporte),Modificadores lexicais
-ml3as,Reforçadores lexicais (no ato de suporte),Modificadores lexicais
-ml4as,Escolhas lexicais atenuantes (no ato de suporte),Modificadores lexicais
-md1,Marcadores de vínculo ou empatia,Modificadores discursivos
-md2,Marcadores de cortesia,Modificadores discursivos
-md3,Reformuladores,Modificadores discursivos
-md4,Marcadores aduladores,Modificadores discursivos
-md1as,Marcadores de vínculo ou empatia (no ato de suporte),Modificadores discursivos
-md2as,Marcadores de cortesia (no ato de suporte),Modificadores discursivos
-md3as,Reformuladores (no ato de suporte),Modificadores discursivos
+mms1,Deslocamento verbal,Modificador morfossintático
+mms2,Modal ou construção equivalente,Modificador morfossintático
+mms3,Encaixe,Modificador morfossintático
+mms4,Negação ou fórmula dubitativa,Modificador morfossintático
+mms5,Diminutivo,Modificador morfossintático
+mms1as,Deslocamento verbal (no ato de suporte),Modificador morfossintático
+mms2as,Modal ou construção equivalente (no ato de suporte),Modificador morfossintático
+mms3as,Encaixe (no ato de suporte),Modificador morfossintático
+mms4as,Negação ou fórmula dubitativa (no ato de suporte),Modificador morfossintático
+ml1,Minimizadores e indeterminadores lexicais,Modificador lexical
+ml2,Duvidadores lexicais,Modificador lexical
+ml3,Reforçadores lexicais,Modificador lexical
+ml4,Escolhas lexicais atenuantes,Modificador lexical
+ml1as,Minimizadores e indeterminadores lexicais (no ato de suporte),Modificador lexical
+ml3as,Reforçadores lexicais (no ato de suporte),Modificador lexical
+ml4as,Escolhas lexicais atenuantes (no ato de suporte),Modificador lexical
+md1,Marcadores de vínculo ou empatia,Modificador discursivo
+md2,Marcadores de cortesia,Modificador discursivo
+md3,Reformuladores,Modificador discursivo
+md4,Marcadores aduladores,Modificador discursivo
+md1as,Marcadores de vínculo ou empatia (no ato de suporte),Modificador discursivo
+md2as,Marcadores de cortesia (no ato de suporte),Modificador discursivo
+md3as,Reformuladores (no ato de suporte),Modificador discursivo
 as1,Apelo,Ato de suporte
 as2,Exclamação,Ato de suporte
 as3,Minimizador de custo,Ato de suporte

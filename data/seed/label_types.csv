@@ -1,7 +1,7 @@
 code,name
 ap,Ato principal
 pp,Perspectiva
-mms,Modificadores morfossintáticos
-ml,Modificadores lexicais
-md,Modificadores discursivos
-as,Atos de suporte
+mms,Modificador morfossintático
+ml,Modificador lexical
+md,Modificador discursivo
+as,Ato de suporte
