@@ -1,56 +1,97 @@
-code,name,type_name
-ap1,Ato principal direto,Ato principal
-ap2,Ato principal convencionalmente indireto,Ato principal
-ap3,Ato principal não convencionalmente indireto,Ato principal
-ap0,Ato principal inexistente,Ato principal
-ap*,Ato principal (qualquer tipo),Ato principal
-+ap1,Ato principal direto (menor grau de imposição),Ato principal
-+ap2,Ato principal convencionalmente indireto (menor grau de imposição),Ato principal
-+ap3,Ato principal não convencionalmente indireto (menor grau de imposição),Ato principal
-pp1,1a pessoa do singular,Perspectiva
-pp2,2a pessoa do singular ou plural,Perspectiva
-pp3,1a pessoa do plural (nós),Perspectiva
-pp4,impessoal,Perspectiva
-+pp1,1a pessoa do singular (menor grau de imposição),Perspectiva
-+pp2,2a pessoa do singular ou plural (menor grau de imposição),Perspectiva
-+pp4,impessoal (menor grau de imposição),Perspectiva
-mms1,Deslocamento verbal,Modificador morfossintático
-mms2,Modal ou construção equivalente,Modificador morfossintático
-mms3,Encaixe,Modificador morfossintático
-mms4,Negação ou fórmula dubitativa,Modificador morfossintático
-mms5,Diminutivo,Modificador morfossintático
-mms1as,Deslocamento verbal (no ato de suporte),Modificador morfossintático
-mms2as,Modal ou construção equivalente (no ato de suporte),Modificador morfossintático
-mms3as,Encaixe (no ato de suporte),Modificador morfossintático
-mms4as,Negação ou fórmula dubitativa (no ato de suporte),Modificador morfossintático
-ml1,Minimizadores e indeterminadores lexicais,Modificador lexical
-ml2,Duvidadores lexicais,Modificador lexical
-ml3,Reforçadores lexicais,Modificador lexical
-ml4,Escolhas lexicais atenuantes,Modificador lexical
-ml1as,Minimizadores e indeterminadores lexicais (no ato de suporte),Modificador lexical
-ml3as,Reforçadores lexicais (no ato de suporte),Modificador lexical
-ml4as,Escolhas lexicais atenuantes (no ato de suporte),Modificador lexical
-md1,Marcadores de vínculo ou empatia,Modificador discursivo
-md2,Marcadores de cortesia,Modificador discursivo
-md3,Reformuladores,Modificador discursivo
-md4,Marcadores aduladores,Modificador discursivo
-md1as,Marcadores de vínculo ou empatia (no ato de suporte),Modificador discursivo
-md2as,Marcadores de cortesia (no ato de suporte),Modificador discursivo
-md3as,Reformuladores (no ato de suporte),Modificador discursivo
-as1,Apelo,Ato de suporte
-as2,Exclamação,Ato de suporte
-as3,Minimizador de custo,Ato de suporte
-as4,Preparador,Ato de suporte
-as5,Justificativa,Ato de suporte
-as6,Proposta de ressarcimento ou garantia,Ato de suporte
-as7,Propostas de alternativas,Ato de suporte
-as8,Aduladores,Ato de suporte
-as9,Agradecimentos,Ato de suporte
-as10,Reconhecimento do custo do pedidos,Ato de suporte
-+as1,Apelo (menor grau de imposição),Ato de suporte
-+as3,Minimizador de custo (menor grau de imposição),Ato de suporte
-+as4,Preparador (menor grau de imposição),Ato de suporte
-+as5,Justificativa (menor grau de imposição),Ato de suporte
-+as7,Propostas de alternativas (menor grau de imposição),Ato de suporte
-+as9,Agradecimentos (menor grau de imposição),Ato de suporte
-+as10,Reconhecimento do custo do pedidos (menor grau de imposição),Ato de suporte
+code,name,type_name,description,examples
+ap1,Ato principal direto,Ato principal,"Pedidos cuja força ilocucionária é imediatamente reconhecível, sem exigir inferência por parte do interlocutor, realizados principalmente por imperativos, verbos performativos, want-statements e perguntas diretas.","Me passa a água, por favor
+Me empresta a caneta rapidinho…?
+…você paga para mim?
+"
+ap2,Ato principal convencionalmente indireto,Ato principal,"Pedidos realizados por meio de formulações convencionalizadas cuja força ilocucionária não coincide diretamente com o enunciado produzido, mas é reconhecível com um grau relativamente baixo de inferência. Incluem verificações de condições preparatórias, expressões de necessidade e propostas.","Você poderia, por gentileza me emprestar o dinheiro?
+Eu gostaria de um copo de água por favor.
+Preciso de um copo d’água
+Você teria um pano ou toalhinha?
+Tem água, amig@?"
+ap3,Ato principal não convencionalmente indireto,Ato principal,"Pedidos realizados por meio de pistas ou indícios não convencionalizados, que exigem um grau de inferência maior por parte do interlocutor. Em alguns casos, a força ilocucionária é veiculada por um ato de suporte (como uma justificativa) que, na ausência de um ato principal explícito, funciona ele mesmo como o pedido.","Esqueci meu celular e a carteira.
+Onde tem água?"
+nr,Não realização do ato,Ato principal,Casos em que os informantes afirmam que não diriam nada,Nada. O amigo espera.
+ap*,Ato de fala diferente do pedido,Ato principal,"Enunciados que resolvem a situação comunicativa sem realizar um pedido, substituindo-o por outro ato de fala que torna o pedido desnecessário ou implícito.","Vou pegar uma água…"
++ap1,Ato principal direto (adicional),Ato principal,"Como ap1, nos casos em que há mais de um pedido em um único enunciado ",
++ap2,Ato principal convencionalmente indireto (adicional),Ato principal,"Como ap2, nos casos em que há mais de um pedido em um único enunciado ",
++ap3,Ato principal não convencionalmente indireto (adicional),Ato principal,"Como ap3, nos casos em que há mais de um pedido em um único enunciado ",
+pp1,Pedido formulado a partir da 1a pessoa do singular (eu),Perspectiva,O pedido é formulado tomando como referência o próprio falante,Posso pegar sua caneta emprestada quando vc terminar aí?
+pp2,Pedido formulado a partir da 2a pessoa do singular ou plural (tu/você/vocês),Perspectiva,"O pedido é formulado tomando como referência o interlocutor, independentemente da forma de tratamento adotada",Você poderia me emprestar o celular?
+pp3,Pedido formulado a partir da 1a pessoa do plural (nós),Perspectiva,O pedido envolve simultaneamente falante e interlocutor na formulação,Podemos ir juntos com seu carro?
+pp4,Pedido formulado de maneira impessoal,Perspectiva,Nenhum dos interlocutores é diretamente referenciado na formulação do pedido,Será que dá para tomar uma água?
++pp1,Pedido formulado a partir da 1a pessoa do singular (eu) (adicional),Perspectiva,"Como pp1, nos casos em que há mais de um pedido em um único enunciado ",
++pp2,Pedido formulado a partir da 2a pessoa do singular ou plural (tu/você/vocês) (adicional),Perspectiva,"Como pp2, nos casos em que há mais de um pedido em um único enunciado ",
++pp3,Pedido formulado a partir da 1a pessoa do plural (nós) (adicional),Perspectiva,"Como pp3, nos casos em que há mais de um pedido em um único enunciado ",
++pp4,Pedido formulado de maneira impessoal (adicional),Perspectiva,"Como pp4, nos casos em que há mais de um pedido em um único enunciado ",
+mms1,Deslocamento verbal,Modificador morfossintático,Produz um efeito de sentido de distanciamento temporal e/ou modal em relação ao momento da enunciação do pedido.,"Haveria…;
+Não teria...;
+Você poderia me dar...?; 
+Eu queria..."
+mms2,Modal ou construção equivalente,Modificador morfossintático,"Expressam obrigação, proibição, necessidade ou possibilidade em relação ao pedido.","Posso/É possível tomar um banho?;
+Preciso tomar um banho"
+mms3,Encaixe,Modificador morfossintático,"Combina-se com imperfeito ou condicional, acrescentando um efeito de sentido de distanciamento.",Queria saber se…; Gostaria de perguntar se…; Estava me perguntando se…
+mms4,Negação ou fórmula dubitativa,Modificador morfossintático,"Produz um efeito de sentido de dúvida sobre se o pedido será atendido, afastando ou reduzindo sua força ilocucionária.","Você não pode me emprestar…?
+Será que… ?
+Se você puder..."
+mms5,Diminutivo,Modificador morfossintático,Cria o efeito de sentido de que o pedido não exigirá grande esforço do interlocutor.,"Só um minutinho…;
+Me faz um favorzinho"
+mms1as,Deslocamento verbal (no ato de suporte),Modificador morfossintático,"Como mms1, quando o modificador se encontra em um ato de suporte ",
+mms2as,Modal ou construção equivalente (no ato de suporte),Modificador morfossintático,"Como mms2, quando o modificador se encontra em um ato de suporte ",
+mms3as,Encaixe (no ato de suporte),Modificador morfossintático,"Como mms3, quando o modificador se encontra em um ato de suporte ",
+mms4as,Negação ou fórmula dubitativa (no ato de suporte),Modificador morfossintático,"Como mms4, quando o modificador se encontra em um ato de suporte ",
+mms5as,Diminutivo (no ato de suporte),Modificador morfossintático,"Como mms5, quando o modificador se encontra em um ato de suporte ",
+ml1,Minimizadores e indeterminadores lexicais,Modificador lexical,Veicula a ideia de que o pedido é de pequena monta ou deixa intencionalmente em aberto a quantidade ou a extensão do que está sendo solicitado.,"Um pouco;
+um momento,
+em princípio...; você tem algum dinheiro …?"
+ml2,Duvidadores lexicais,Modificador lexical,"Veicula, por meio de formulações que expressam incerteza, um efeito de sentido de diminuição das expectativas do falante em relação ao atendimento do pedido.","Por acaso;
+talvez;
+acho/penso que…"
+ml3,Reforçadores lexicais,Modificador lexical,"Enfatiza a importância, a urgência e a necessidade do pedido.","Urgentemente, realmente;
+preciso de (+objeto)"
+ml4,Escolhas lexicais atenuantes,Modificador lexical,Substitui formulações mais diretas por unidades lexicais que criam maior distância entre o falante e o conteúdo do pedido.,"Me permite...?; Você se incomoda se…?;
+Você tem como...? Infelizmente"
+ml1as,Minimizadores e indeterminadores lexicais (no ato de suporte),Modificador lexical,"Como ml1, quando o modificador se encontra em um ato de suporte ",
+ml2as,Duvidadores lexicais (no ato de suporte),Modificador lexical,"Como ml2, quando o modificador se encontra em um ato de suporte ",
+ml3as,Reforçadores lexicais (no ato de suporte),Modificador lexical,"Como ml3, quando o modificador se encontra em um ato de suporte ",
+ml4as,Escolhas lexicais atenuantes (no ato de suporte),Modificador lexical,"Como ml4, quando o modificador se encontra em um ato de suporte ",
+md1,Marcadores de vínculo ou empatia,Modificador discursivo,"Estabelece contato direto com o interlocutor por meio de marcadores fáticos, pedidos de acordo ou expressões equivalentes, buscando criar um efeito de sentido de proximidade ou empatia.","Sabe, veja;
+Não é (verdade)? 
+Tudo bem?;
+Você faria isso pra mim?
+Querida..."
+md2,Marcadores de cortesia,Modificador discursivo,"Sinaliza a entrada no território do interlocutor e/ou a solicitação de sua atenção, recorrendo expressamente à sua colaboração.","Por favor; vai;
+gentilmente;
+por gentileza;
+Bom dia, Olá, tudo bem?"
+md3,Reformuladores,Modificador discursivo,Manifesta hesitação e sinaliza que a formulação do pedido gera desconforto para o falante.,"Quer dizer; enfim;
+então"
+md4,Marcadores aduladores,Modificador discursivo,Desloca a realização do pedido para a gentileza e/ou disponibilidade do interlocutor.,O senhor poderia fazer a gentileza de me emprestar …?
+md1as,Marcadores de vínculo ou empatia (no ato de suporte),Modificador discursivo,"Como md1, quando o  se encontra em um ato de suporte ",
+md2as,Marcadores de cortesia (no ato de suporte),Modificador discursivo,"Como md2, quando o  se encontra em um ato de suporte ",
+md3as,Reformuladores (no ato de suporte),Modificador discursivo,"Como md3, quando o  se encontra em um ato de suporte ",
+as1,Apelo,Ato de suporte,"Estabelece contato com o interlocutor antes do pedido, por meio do nome próprio, de um termo afetivo ou de outro recurso que chame sua atenção.",Com licença; Moço; Senhor; Amigo
+as2,Exclamação,Ato de suporte,"Expressa surpresa, contrariedade, decepção ou hesitação, podendo chamar a atenção do interlocutor, criar empatia ou assinalar o caráter interacional do enunciado.","Nossa!; Vixi!;
+Putz!; Ih…"
+as3,Minimizador de custo,Ato de suporte,Cria o efeito de reduzir o esforço ou o custo associado ao pedido.,Não vai demorar mais que 5 minutos
+as4,Preparador,Ato de suporte,"Sempre colocado antes do ato principal, anuncia a iminência de um pedido, reduzindo a possibilidade de recusa.",Preciso pedir um grande favor; Estou com um problema
+as5,Justificativa,Ato de suporte,"Explicita a razão, a causa ou a finalidade do pedido.",Esqueci minha carteira; ...para me enxugar
+as6,Proposta de ressarcimento ou garantia,Ato de suporte,Oferece algo em troca ao interlocutor ou assegura que a perda momentânea será ressarcida.,"Eu pago a ligação; 
+Juro que amanhã devolvo"
+as7,Propostas de alternativas,Ato de suporte,"Oferece uma alternativa ou uma margem de escolha ao interlocutor, excluindo ou minimizando as consequências negativas da não realização do pedido.","Se você não puder, eu dou um jeito;
+Quando você tiver um tempinho"
+as8,Aduladores,Ato de suporte,Ressalta as capacidades ou atributos do interlocutor com o objetivo de persuadi-lo.,Você que sempre me ajuda; Você que é sempre tão disponível
+as9,Agradecimentos,Ato de suporte,Conclui o ritual de interação iniciado pelo pedido.,"Obrigada;
+agradeço"
+as10,Reconhecimento do custo do pedidos,Ato de suporte,Sinaliza a consciência do falante sobre o custo que o pedido implica para o interlocutor.,Se não for incômodo/abuso; Se não for pedir demais
+as11,Auto-humilhadores,Ato de suporte,Coloca em evidência uma limitação do falante ou uma característica da situação que o levou a formular o pedido.,fui burra e esqueci…
++as1,Apelo (adicional),Ato de suporte,"Como as1, nos casos em que há mais de um apelo em um único enunciado ",
++as2,Exclamação (adicional),Ato de suporte,"Como as2, nos casos em que há mais de uma exclamação em um único enunciado ",
++as3,Minimizador de custo (adicional),Ato de suporte,"Como as3, nos casos em que há mais de um minimizador em um único enunciado ",
++as4,Preparador (adicional),Ato de suporte,"Como as4, nos casos em que há mais de um preparador em um único enunciado ",
++as5,Justificativa (adicional),Ato de suporte,"Como as5, nos casos em que há mais de uma justificativa em um único enunciado ",
++as6,Proposta de ressarcimento ou garantia (adicional),Ato de suporte,"Como as6, nos casos em que há mais de uma proposta de ressarcimento ou garantia em um único enunciado ",
++as7,Proposta de alternativa (adicional),Ato de suporte,"Como as7, nos casos em que há mais de uma proposta de alternativas em um único enunciado ",
++as8,Aduladores (adicional),Ato de suporte,"Como as8, nos casos em que há mais de um adulador em um único enunciado ",
++as9,Agradecimento (adicional),Ato de suporte,"Como as9, nos casos em que há mais de um agradecimento em um único enunciado ",
++as10,Reconhecimento do custo do pedido (adicional),Ato de suporte,"Como as10, nos casos em que há mais de uma sinalização de reconhecimento do custo do pedido em um único enunciado ",
++as11,Auto-humilhadores (adicional),Ato de suporte,"Como as11, nos casos em que há mais de um auto-humilhador em um único enunciado ",
