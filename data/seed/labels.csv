@@ -1,0 +1,56 @@
+code,name,type_name
+ap1,Ato principal direto,Ato principal
+ap2,Ato principal convencionalmente indireto,Ato principal
+ap3,Ato principal não convencionalmente indireto,Ato principal
+ap0,Ato principal inexistente,Ato principal
+ap*,Ato principal (qualquer tipo),Ato principal
++ap1,Ato principal direto (menor grau de imposição),Ato principal
++ap2,Ato principal convencionalmente indireto (menor grau de imposição),Ato principal
++ap3,Ato principal não convencionalmente indireto (menor grau de imposição),Ato principal
+pp1,1a pessoa do singular,Perspectiva
+pp2,2a pessoa do singular ou plural,Perspectiva
+pp3,1a pessoa do plural (nós),Perspectiva
+pp4,impessoal,Perspectiva
++pp1,1a pessoa do singular (menor grau de imposição),Perspectiva
++pp2,2a pessoa do singular ou plural (menor grau de imposição),Perspectiva
++pp4,impessoal (menor grau de imposição),Perspectiva
+mms1,Deslocamento verbal,Modificador morfossintático
+mms2,Modal ou construção equivalente,Modificador morfossintático
+mms3,Encaixe,Modificador morfossintático
+mms4,Negação ou fórmula dubitativa,Modificador morfossintático
+mms5,Diminutivo,Modificador morfossintático
+mms1as,Deslocamento verbal (no ato de suporte),Modificador morfossintático
+mms2as,Modal ou construção equivalente (no ato de suporte),Modificador morfossintático
+mms3as,Encaixe (no ato de suporte),Modificador morfossintático
+mms4as,Negação ou fórmula dubitativa (no ato de suporte),Modificador morfossintático
+ml1,Minimizadores e indeterminadores lexicais,Modificador lexical
+ml2,Duvidadores lexicais,Modificador lexical
+ml3,Reforçadores lexicais,Modificador lexical
+ml4,Escolhas lexicais atenuantes,Modificador lexical
+ml1as,Minimizadores e indeterminadores lexicais (no ato de suporte),Modificador lexical
+ml3as,Reforçadores lexicais (no ato de suporte),Modificador lexical
+ml4as,Escolhas lexicais atenuantes (no ato de suporte),Modificador lexical
+md1,Marcadores de vínculo ou empatia,Modificador discursivo
+md2,Marcadores de cortesia,Modificador discursivo
+md3,Reformuladores,Modificador discursivo
+md4,Marcadores aduladores,Modificador discursivo
+md1as,Marcadores de vínculo ou empatia (no ato de suporte),Modificador discursivo
+md2as,Marcadores de cortesia (no ato de suporte),Modificador discursivo
+md3as,Reformuladores (no ato de suporte),Modificador discursivo
+as1,Apelo,Ato de suporte
+as2,Exclamação,Ato de suporte
+as3,Minimizador de custo,Ato de suporte
+as4,Preparador,Ato de suporte
+as5,Justificativa,Ato de suporte
+as6,Proposta de ressarcimento ou garantia,Ato de suporte
+as7,Propostas de alternativas,Ato de suporte
+as8,Aduladores,Ato de suporte
+as9,Agradecimentos,Ato de suporte
+as10,Reconhecimento do custo do pedidos,Ato de suporte
++as1,Apelo (menor grau de imposição),Ato de suporte
++as3,Minimizador de custo (menor grau de imposição),Ato de suporte
++as4,Preparador (menor grau de imposição),Ato de suporte
++as5,Justificativa (menor grau de imposição),Ato de suporte
++as7,Propostas de alternativas (menor grau de imposição),Ato de suporte
++as9,Agradecimentos (menor grau de imposição),Ato de suporte
++as10,Reconhecimento do custo do pedidos (menor grau de imposição),Ato de suporte

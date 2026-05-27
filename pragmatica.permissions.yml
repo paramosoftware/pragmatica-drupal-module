@@ -1,3 +1,7 @@
-pragmatica:
+administer pragmatica:
   title: 'Administrar o módulo Pragmática'
   description: 'Permite gerenciar as páginas e entidades do módulo Pragmática.'
+
+pragmatica view public:
+  title: 'Visualizar páginas públicas do Pragmática'
+  description: 'Permite acessar as páginas públicas de busca, etiquetas, respostas, situações e informantes.'

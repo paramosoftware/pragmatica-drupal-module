@@ -33,6 +33,7 @@ class QDEImporter {
     LoggerChannelFactoryInterface $logger_factory,
     bool $save_rich_text_files = false
   ) {
+    throw new Exception('QDEImporter is not maintained and should not be used without code review and adjustments.');
     $this->xml_file_path = $xml_file_path;
     $this->sources_folder_path = $sources_folder_path;
     $this->entity_manager = $entity_type_manager;

@@ -14,6 +14,8 @@ class LabelPublicController extends ControllerBase {
 
   protected $entityTypeManager;
 
+  use PagerTrait;
+
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
   }
@@ -75,20 +77,36 @@ class LabelPublicController extends ControllerBase {
     $query = $selection_storage->getQuery();
     $query->condition('label_id', $pragmatica_label->id());
 
-    $selection_ids = $query->execute();
-    $selections = $selection_storage->loadMultiple($selection_ids);
-    $processed_responses = [];
+    $per_page = 24;
+    $page = (int) \Drupal::request()->query->get('page', 0);
 
-    $selections = array_slice($selections, 0, 50);
-    foreach ($selections as $selection) {
-      /** @var \Drupal\pragmatica\Entity\Response $response */
-      $response = $selection->get('response_id')->entity;
-      $processed_responses[] = $response->getEntityForDisplay();
+    $count_query = clone $query;
+    $total = (int) $count_query->count()->execute();
+
+    $pager = $this->buildPager($total, $per_page, $page, 5);
+    $page = $pager['current'];
+
+    $processed_responses = [];
+    if ($total > 0) {
+      $offset = $page * $per_page;
+      $query->range($offset, $per_page);
+      $selection_ids = $query->execute();
+      $selections = $selection_storage->loadMultiple($selection_ids);
+
+      foreach ($selections as $selection) {
+        /** @var \Drupal\pragmatica\Entity\Response $response */
+        $response = $selection->get('response_id')->entity;
+        $processed_responses[] = $response->getEntityForDisplay();
+      }
+    } else {
+      $pager = $this->buildPager(0, $per_page, 0, 5);
     }
 
     $build['#theme'] = 'pragmatica_label_item';
     $build['#label'] = $pragmatica_label->getEntityForDisplay();
     $build['#responses'] = $processed_responses;
+    $build['#pager'] = $pager;
+    $build['#autopins'] = [(int) $pragmatica_label->id()];
     $build['#attached'] = [
       'library' => [
         'pragmatica/pragmatica',

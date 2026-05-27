@@ -14,6 +14,8 @@ class PragmaticaPublicController extends ControllerBase {
 
   protected $entityTypeManager;
 
+  use PagerTrait;
+
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
   }
@@ -38,7 +40,7 @@ class PragmaticaPublicController extends ControllerBase {
    * @todo: Paginate results.
    */
   public function search(Request $request) {
-    $query_params = $request->request->all();
+    $query_params = array_merge($request->query->all(), $request->request->all());
     $results = [];
 
     $form = new PragmaticaPublicSearchForm();
@@ -47,15 +49,27 @@ class PragmaticaPublicController extends ControllerBase {
     $query = $response_storage->getQuery();
     $query = $form->buildSearchQuery($query);
 
-    $response_ids = $query->execute();
+    $per_page = 24;
+    $page = (int) ($request->query->get('page', 0));
 
-    if (!empty($response_ids)) {
-      $response_ids = array_slice($response_ids, 0, 50);
-      /** @var \Drupal\pragmatica\Entity\Response[] $responses */
-      $responses = $response_storage->loadMultiple($response_ids);
-      $results['responses'] = [];
-      foreach ($responses as $response) {
-        $results['responses'][] =  $response->getEntityForDisplay();
+    $count_query = clone $query;
+    $total = (int) $count_query->count()->execute();
+
+    $pager = $this->buildPager($total, $per_page, $page, 5);
+    $page = $pager['current'];
+
+    if ($total > 0) {
+      $offset = $page * $per_page;
+      $query->range($offset, $per_page);
+      $response_ids = $query->execute();
+
+      if (!empty($response_ids)) {
+        /** @var \Drupal\pragmatica\Entity\Response[] $responses */
+        $responses = $response_storage->loadMultiple($response_ids);
+        $results['responses'] = [];
+        foreach ($responses as $response) {
+          $results['responses'][] =  $response->getEntityForDisplay();
+        }
       }
     }
 
@@ -64,6 +78,10 @@ class PragmaticaPublicController extends ControllerBase {
       '#query' => '',
       '#results' => $results,
       '#filters' => $form->getFieldConfig(),
+      '#filter_groups' => $form->getGroupedFieldConfig(),
+      '#active_filters' => $form->getActiveFiltersDisplay(),
+      '#pager' => $pager,
+      '#autopins' => $form->getSelectedLabelIds(),
       '#attached' => [
         'library' => [
           'pragmatica/pragmatica'
@@ -71,4 +89,5 @@ class PragmaticaPublicController extends ControllerBase {
       ],
     ];
   }
+
 }

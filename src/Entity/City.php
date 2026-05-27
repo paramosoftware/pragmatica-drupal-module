@@ -10,8 +10,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *
  * @ContentEntityType(
  *   id = "pragmatica_city",
- *   label = @Translation("Cidade"),
- *   label_plural = @Translation("Cidades"),
+ *   label = @Translation("Residência"),
+ *   label_plural = @Translation("Residências"),
  *   base_table = "pragmatica_city",
  *   admin_permission = "pragmatica",
  *   entity_keys = {

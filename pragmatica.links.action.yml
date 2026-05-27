@@ -10,23 +10,11 @@ entity.pragmatica_label_type.add:
   appears_on:
     - entity.pragmatica_label_type.collection
 
-entity.pragmatica_source.add:
-  route_name: entity.pragmatica_source.add_form
-  title: 'Adicionar fonte'
-  appears_on:
-    - entity.pragmatica_source.collection
-
 entity.pragmatica_selection.add:
   route_name: entity.pragmatica_selection.add_form
   title: 'Adicionar marcação'
   appears_on:
       - entity.pragmatica_selection.collection
-
-entity.pragmatica_user.add:
-  route_name: entity.pragmatica_user.add_form
-  title: 'Adicionar usuário'
-  appears_on:
-    - entity.pragmatica_user.collection
 
 entity.pragmatica_gender.add:
   route_name: entity.pragmatica_gender.add_form
@@ -54,7 +42,7 @@ entity.pragmatica_region.add:
 
 entity.pragmatica_city.add:
   route_name: entity.pragmatica_city.add_form
-  title: 'Adicionar cidade'
+  title: 'Adicionar residência'
   appears_on:
     - entity.pragmatica_city.collection
 

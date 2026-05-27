@@ -5,13 +5,13 @@ namespace Drupal\pragmatica\Entity;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
- * Defines the User content entity.
+ * Defines the AgeInterval content entity.
  *
  * @ContentEntityType(
- *   id = "pragmatica_user",
- *   label = @Translation("Usuário"),
- *   label_plural = @Translation("Usuários"),
- *   base_table = "pragmatica_user",
+ *   id = "pragmatica_age_interval",
+ *   label = @Translation("Intervalo de idade"),
+ *   label_plural = @Translation("Intervalos de idade"),
+ *   base_table = "pragmatica_age_interval",
  *   admin_permission = "pragmatica",
  *   entity_keys = {
  *     "id" = "id",
@@ -26,18 +26,18 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     }
  *   },
  *   links = {
- *     "canonical" = "/admin/pragmatica/user/{pragmatica_user}",
- *     "add-form" = "/admin/pragmatica/user/add",
- *     "edit-form" = "/admin/pragmatica/user/{pragmatica_user}/edit",
- *     "delete-form" = "/admin/pragmatica/user/{pragmatica_user}/delete",
- *     "collection" = "/admin/pragmatica/user"
+ *     "canonical" = "/admin/pragmatica/age_interval/{pragmatica_age_interval}",
+ *     "add-form" = "/admin/pragmatica/age_interval/add",
+ *     "edit-form" = "/admin/pragmatica/age_interval/{pragmatica_age_interval}/edit",
+ *     "delete-form" = "/admin/pragmatica/age_interval/{pragmatica_age_interval}/delete",
+ *     "collection" = "/admin/pragmatica/age_interval"
  *   }
  * )
  */
-class User extends PragmaticaBaseEntity {
+class AgeInterval extends PragmaticaBaseEntity {
 
   public static function getFieldsIds(): array {
-    return ['id', 'guid', 'name', 'created', 'changed'];
+    return ['id', 'code', 'name', 'created', 'changed'];
   }
 
   public static function getFieldsToXmlMapping(): array {

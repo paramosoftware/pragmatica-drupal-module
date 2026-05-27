@@ -16,7 +16,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   admin_permission = "pragmatica",
  *   entity_keys = {
  *     "id" = "id",
- *     "label" = "code"
+ *     "label" = "short_name",
  *   },
  *   handlers = {
  *     "list_builder" = "Drupal\pragmatica\ListBuilder\PragmaticaBaseListBuilder",

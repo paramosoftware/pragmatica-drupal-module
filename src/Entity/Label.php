@@ -88,9 +88,9 @@ class Label extends PragmaticaBaseEntity {
 
     $fields['type_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Tipo'))
-      ->setRequired(TRUE)
+      ->setRequired(FALSE)
       ->setSetting('target_type', 'pragmatica_label_type')
-      ->setDefaultValue(1)
+      ->setDefaultValue(NULL)
       ->setDisplayOptions('form', [
         'type' => 'options_select',
         'weight' => 1,
@@ -151,7 +151,31 @@ class Label extends PragmaticaBaseEntity {
     }
 
     $display['color'] = $base_entity->get('color')->value;
+    $display['text_color'] = self::getContrastTextColor($display['color']);
     return $display;
+  }
+
+  /**
+   * Returns '#ffffff' or '#1a1a1a' depending on which has better WCAG contrast
+   * against the given hex background colour.
+   */
+  private static function getContrastTextColor(string $hex): string {
+    $hex = ltrim($hex, '#');
+    if (strlen($hex) === 3) {
+      $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
+    }
+    if (strlen($hex) !== 6) {
+      return '#ffffff';
+    }
+    $linearise = function (float $c): float {
+      return $c <= 0.03928 ? $c / 12.92 : (($c + 0.055) / 1.055) ** 2.4;
+    };
+    $r = $linearise(hexdec(substr($hex, 0, 2)) / 255);
+    $g = $linearise(hexdec(substr($hex, 2, 2)) / 255);
+    $b = $linearise(hexdec(substr($hex, 4, 2)) / 255);
+    $luminance = 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
+    // WCAG threshold: white (L=1) vs dark (L≈0.12) — cross-over at ~0.179
+    return $luminance > 0.179 ? '#1a1a1a' : '#ffffff';
   }
 
 

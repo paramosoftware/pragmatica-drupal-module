@@ -45,7 +45,6 @@ class Response extends PragmaticaBaseEntity {
       'name',
       'situation_id',
       'informant_id',
-      'source_id',
       'created',
       'changed',
     ];
@@ -114,20 +113,6 @@ class Response extends PragmaticaBaseEntity {
         'weight' => 6,
       ]);
 
-    $fields['source_id'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Fonte'))
-      ->setSetting('target_type', 'pragmatica_source')
-      ->setRequired(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 6,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'entity_reference_label',
-        'weight' => 6,
-      ]);
-
     return self::addBaseFieldDefinitions($fields, self::getFieldsIds());
   }
 
@@ -144,15 +129,25 @@ class Response extends PragmaticaBaseEntity {
     foreach ($selections as $selection) {
       /** @var \Drupal\pragmatica\Entity\Label $selection_label_entity */
       $selection_label_entity = $selection->get('label_id')->entity;
+      if (!$selection_label_entity) {
+        continue;
+      }
+      
+      $label_id = $selection_label_entity->id();
 
-      $label_display = $selection_label_entity->getEntityForDisplay($selection_label_entity);
-      $label_display['start_position'] = $selection->get('start_position')->value;
-      $label_display['end_position'] = $selection->get('end_position')->value;
+      if (!isset($processed_labels[$label_id])) {
+        $label_display = $selection_label_entity->getEntityForDisplay($selection_label_entity);
+        $label_display['selections'] = [];
+        $processed_labels[$label_id] = $label_display;
+      }
 
-      $processed_labels[] = $label_display;
+      $processed_labels[$label_id]['selections'][] = [
+        'start' => (int) $selection->get('start_position')->value,
+        'end' => (int) $selection->get('end_position')->value,
+      ];
     }
 
-    return $processed_labels;
+    return array_values($processed_labels);
   }
 
 

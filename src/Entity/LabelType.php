@@ -36,7 +36,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
  */
 class LabelType extends PragmaticaBaseEntity {
   public static function getFieldsIds(): array {
-    return ['id', 'name', 'description', 'created', 'changed'];
+    return ['id', 'code', 'name', 'description', 'created', 'changed'];
   }
 
   public static function getFieldsToXmlMapping(): array {

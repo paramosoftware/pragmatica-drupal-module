@@ -37,7 +37,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 class Gender extends PragmaticaBaseEntity {
 
   public static function getFieldsIds(): array {
-    return ['id', 'name', 'created', 'changed'];
+    return ['id', 'code', 'name', 'created', 'changed'];
   }
 
   public static function getFieldsToXmlMapping(): array {
