@@ -33,7 +33,14 @@
             <div class="prag-label-row-left">
               <a href="{{ label.url }}">{{ label.label }}</a>
               {% if label.description %}
-                <span class="prag-label-row-desc">{{ label.description|slice(0, 120) }}</span>
+                <span class="prag-label-row-desc">{{ label.description }}</span>
+              {% endif %}
+              {% if label._attributes %}
+                {% for attr_label, attr_value in label._attributes %}
+                  {% if '\n' in attr_value %}
+                    <span class="prag-label-row-examples"><strong>{{ attr_label }}:</strong> <span class="prag-attr-value prag-attr-value--block">{{ attr_value }}</span></span>
+                  {% endif %}
+                {% endfor %}
               {% endif %}
             </div>
             {{ macros.label_badge(label, false, false) }}

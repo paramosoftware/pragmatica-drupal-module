@@ -5,14 +5,14 @@
     <p class="prag-page-header-eyebrow">{{ 'Etiqueta'|t }}</p>
     <h1 class="prag-page-header-title">{{ label.label }}</h1>
     {% if label.description %}
-      <p class="prag-page-header-sub">{{ label.description|slice(0, 300, true) }}</p>
+      <p class="prag-page-header-sub prag-page-header-desc">{{ label.description }}</p>
     {% endif %}
     {% if label._attributes %}
-      <p class="prag-page-header-sub mt-1">
-        {% for attr_label, attr_value in label._attributes %}
-          <span class="me-3"><strong>{{ attr_label }}:</strong> {{ attr_value }}</span>
-        {% endfor %}
-      </p>
+      {% for attr_label, attr_value in label._attributes %}
+        <p class="prag-page-header-sub prag-page-header-attr mt-1">
+          <strong>{{ attr_label }}:</strong> <span class="prag-attr-value{% if '\n' in attr_value %} prag-attr-value--block{% endif %}">{{ attr_value }}</span>
+        </p>
+      {% endfor %}
     {% endif %}
   </div>
   <div class="prag-page-header-badge">{{ macros.label_badge(label, false, false) }}</div>
